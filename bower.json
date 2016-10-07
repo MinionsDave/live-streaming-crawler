@@ -1,0 +1,20 @@
+{
+  "name": "live-crawler",
+  "description": "",
+  "main": "",
+  "authors": [
+    "wudengguang <wudengguang@isa.qa>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/MinionsDave/live-streaming-crawler",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
