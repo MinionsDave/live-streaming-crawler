@@ -1,16 +1,14 @@
 extends layout
 
 block content
-    h1= title
-    p Welcome to #{title}
     .container-fluid.liveList
         each item in liveJson
-            a.col-md-2(href='#{item.url}', target='_blank')
+            a.col-md-3(href='#{item.url}', target='_blank')
                 img(src='#{item.snapshot}')
                 h5 #{item.title}
                 .row
-                    .col-sm-8 
+                    .col-sm-8
                         span.glyphicon.glyphicon-user #{item.anchor}
-                    .col-sm-4.text-right 
+                    .col-sm-4.text-right
                         span.glyphicon.glyphicon-eye-open #{item.audienceNumber}
 
