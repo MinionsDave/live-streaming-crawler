@@ -5,11 +5,10 @@ const join = require('bluebird').join;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    join(crawler.crawlHuya(next), crawler.crawlPandaTv(next), crawler.crawlDouyuTv(next))
+    join(crawler.crawlHuya(), crawler.crawlPandaTv(), crawler.crawlDouyuTv())
     .then(jsonList => {
         let liveJson = [].concat(...jsonList);
         liveJson.sort((o1, o2) => o2.audienceNumber - o1.audienceNumber);
-        console.log(liveJson);
         res.render('index', {
             title: 'Express',
             liveJson: liveJson

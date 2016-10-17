@@ -20,6 +20,10 @@ exports.crawlPandaTv = function () {
                     });
                 });
                 resolve(liveJson);
+            })
+            .catch(err => {
+                console.log('熊猫tv获取失败');
+                resolve([]);
             });
     });
 };
@@ -42,6 +46,10 @@ exports.crawlDouyuTv = function () {
                     });
                 });
                 resolve(liveJson);
+            })
+            .catch(err => {
+                console.log('斗鱼tv获取失败');
+                resolve([]);
             });
     });
 };
@@ -61,6 +69,10 @@ exports.crawlHuya = function () {
                     });
                 }
                 resolve(liveJson);
+            })
+            .catch(err => {
+                console.log('虎牙tv获取失败');
+                resolve([]);
             });
     });
 };

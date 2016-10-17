@@ -3,12 +3,14 @@ extends layout
 block content
     .container-fluid.liveList
         each item in liveJson
-            a.col-md-3(href='#{item.url}', target='_blank')
+            a.col-lg-3.col-md-4.col-sm-6.ellipsis(href='#{item.url}', target='_blank')
                 img(src='#{item.snapshot}')
-                h5 #{item.title}
+                h5 &nbsp;#{item.title}
                 .row
                     .col-sm-8
-                        span.glyphicon.glyphicon-user #{item.anchor}
+                        span.glyphicon.glyphicon-user 
+                        &nbsp;#{item.anchor}
                     .col-sm-4.text-right
-                        span.glyphicon.glyphicon-eye-open #{item.audienceNumber}
+                        span.glyphicon.glyphicon-eye-open 
+                        &nbsp;#{item.audienceNumber}
 
