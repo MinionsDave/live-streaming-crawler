@@ -1,15 +1,48 @@
 const cheerio = require('cheerio');
 const Promise = require('bluebird');
 
+const LiveCategory = require('../config/liveCategory');
+
 let get = Promise.promisify(require('superagent').get);
+
+function judgeDataAna (liveJson, name) {
+    if (liveJson.length === 0) {
+        console.log(`${ name }数据解析失败`);
+    }
+}
 
 function transformAudienceNumber (text) {
     return text.indexOf('万') > 0 ? text.replace(/万/, '') * 10000 : text;
 }
 
-exports.crawlPandaTv = function () {
+function crawlLolForHuya (url) {
     return new Promise(resolve => {
-        get('http://www.panda.tv/cate/lol')
+        get(url)
+            .then(({ text }) => {
+                let liveJson = [];
+                for (item of JSON.parse(text).data.list) {
+                    liveJson.push({
+                        title: item.introduction,
+                        anchor: item.nick,
+                        audienceNumber: item.totalCount,
+                        snapshot: item.screenshot,
+                        url: 'http://www.huya.com/' + item.privateHost
+                    });
+                }
+                judgeDataAna(liveJson, '虎牙');
+                resolve(liveJson);
+            })
+            .catch(err => {
+                console.log('虎牙tv获取失败');
+                resolve([]);
+            });
+    });
+}
+
+exports.crawlPandaTv = function (categoryPath) {
+    const url = LiveCategory[categoryPath].urlForPanda;
+    return new Promise(resolve => {
+        get(url)
             .then(({ text }) => {
                 let liveJson = [];
                 let $ = cheerio.load(text);
@@ -23,6 +56,7 @@ exports.crawlPandaTv = function () {
                         url: 'http://www.panda.tv' + ele.attr('href')
                     });
                 });
+                judgeDataAna(liveJson, '熊猫tv');
                 resolve(liveJson);
             })
             .catch(err => {
@@ -32,9 +66,10 @@ exports.crawlPandaTv = function () {
     });
 };
 
-exports.crawlDouyuTv = function () {
+exports.crawlDouyuTv = function (categoryPath) {
+    const url = LiveCategory[categoryPath].urlForDouyu;
     return new Promise(resolve => {
-        get('https://www.douyu.com/directory/game/LOL')
+        get(url)
             .then(({ text }) => {
                 let liveJson = [];
                 let $ = cheerio.load(text);
@@ -49,6 +84,7 @@ exports.crawlDouyuTv = function () {
                         url: 'https://www.douyu.com' + ele.attr('href')
                     });
                 });
+                judgeDataAna(liveJson, '斗鱼tv');
                 resolve(liveJson);
             })
             .catch(err => {
@@ -58,13 +94,18 @@ exports.crawlDouyuTv = function () {
     });
 };
 
-exports.crawlZhanqiTv = function () {
+exports.crawlZhanqiTv = function (categoryPath) {
+    const url = LiveCategory[categoryPath].urlForZhanqi;
     return new Promise(resolve => {
-        get('https://www.zhanqi.tv/games/lol')
+        get(url)
             .then(({ text }) => {
                 let liveJson = [];
-                let $ = cheerio.load(text);
-                $('.clearfix.js-room-list-ul a').each((idx, ele) => {
+                let $ = cheerio.load(text),
+                    $gameDomList = $('.clearfix.js-room-list-ul a');
+                if (categoryPath === 'hearthstone') {
+                    $gameDomList = $('.clearfix.gameList a');
+                }
+                $gameDomList.each((idx, ele) => {
                     ele = $(ele);
                     let audienceText = $(ele.find('span.views span.dv')[0]).text();
                     liveJson.push({
@@ -75,33 +116,41 @@ exports.crawlZhanqiTv = function () {
                         url: 'https://www.zhanqi.tv' + ele.attr('href')
                     });
                 });
+                judgeDataAna(liveJson, '战旗tv');
                 resolve(liveJson);
             })
             .catch(err => {
-                console.log('获取战旗tv失败');
                 resolve([]);
             });
     });
 };
 
-exports.crawlHuya = function () {
+exports.crawlHuya = function (categoryPath) {
+    const url = LiveCategory[categoryPath].urlForHuya;
+    if (categoryPath === 'lol') {
+        return crawlLolForHuya(url);
+    }
     return new Promise(resolve => {
-        get('http://www.huya.com/cache.php?m=Game&do=ajaxGameLiveByPage&gid=1&page=1')
+        get(url)
             .then(({ text }) => {
                 let liveJson = [];
-                for (item of JSON.parse(text).data.list) {
+                let $ = cheerio.load(text);
+                $('.video-list .video-list-item').each((idx, ele) => {
+                    ele = $(ele);
+                    let audienceText = $(ele.find('i.js-num')[0]).text();
                     liveJson.push({
-                        title: item.introduction,
-                        anchor: item.nick,
-                        audienceNumber: item.totalCount,
-                        snapshot: item.screenshot,
-                        url: 'http://www.huya.com/' + item.privateHost
+                        title: $(ele.find('.all_live_tit a.clickstat')[0]).text(),
+                        anchor: $(ele.find('i.nick')[0]).text(),
+                        audienceNumber: transformAudienceNumber(audienceText),
+                        snapshot: $(ele.find('a.video-info img')[0]).attr('src'),
+                        url: $(ele.find('a.video-info')).attr('href')
                     });
-                }
+                });
+                judgeDataAna(liveJson, '虎牙');
                 resolve(liveJson);
             })
             .catch(err => {
-                console.log('虎牙tv获取失败');
+                console.log('虎牙获取失败');
                 resolve([]);
             });
     });
