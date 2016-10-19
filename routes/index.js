@@ -5,14 +5,14 @@ const join = require('bluebird').join;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    join(crawler.crawlHuya(), crawler.crawlPandaTv(), crawler.crawlDouyuTv())
+    join(crawler.crawlHuya(), crawler.crawlPandaTv(), crawler.crawlDouyuTv(), crawler.crawlZhanqiTv())
     .then(jsonList => {
         let liveJson = [].concat(...jsonList);
         liveJson.sort((o1, o2) => o2.audienceNumber - o1.audienceNumber);
         res.render('index', {
             title: 'Express',
             liveJson: liveJson
-        }); 
+        });
     })
     .catch(next);
 });

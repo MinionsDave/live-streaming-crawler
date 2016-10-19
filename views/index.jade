@@ -1,16 +1,17 @@
 extends layout
 
 block content
-    .container-fluid.liveList
-        each item in liveJson
-            a.col-lg-3.col-md-4.col-sm-6.ellipsis(href='#{item.url}', target='_blank')
-                img(src='#{item.snapshot}')
-                h5 &nbsp;#{item.title}
-                .row
-                    .col-sm-8
-                        span.glyphicon.glyphicon-user 
-                        &nbsp;#{item.anchor}
-                    .col-sm-4.text-right
-                        span.glyphicon.glyphicon-eye-open 
-                        &nbsp;#{item.audienceNumber}
+    #page-content-wrapper
+        .container-fluid.liveList
+            each item in liveJson
+                a.col-lg-3.col-md-4.col-sm-6.ellipsis(href='#{item.url}', target='_blank')
+                    img(src='#{item.snapshot}')
+                    h5 &nbsp;#{item.title}
+                    .row
+                        .col-sm-8
+                            span.glyphicon.glyphicon-user
+                            &nbsp;#{item.anchor}
+                        .col-sm-4.text-right
+                            span.glyphicon.glyphicon-eye-open
+                            &nbsp;#{item.audienceNumber}
 

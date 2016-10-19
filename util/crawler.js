@@ -3,6 +3,10 @@ const Promise = require('bluebird');
 
 let get = Promise.promisify(require('superagent').get);
 
+function transformAudienceNumber (text) {
+    return text.indexOf('万') > 0 ? text.replace(/万/, '') * 10000 : text;
+}
+
 exports.crawlPandaTv = function () {
     return new Promise(resolve => {
         get('http://www.panda.tv/cate/lol')
@@ -36,11 +40,11 @@ exports.crawlDouyuTv = function () {
                 let $ = cheerio.load(text);
                 $('#live-list-content li a').each((idx, ele) => {
                     ele = $(ele);
-                    let audienceNumber = $(ele.find('.dy-num')[0]).text();
+                    let audienceText = $(ele.find('.dy-num')[0]).text();
                     liveJson.push({
                         title: ele.attr('title'),
                         anchor: $(ele.find('.dy-name')[0]).text(),
-                        audienceNumber: audienceNumber.indexOf('万') > 0 ? audienceNumber.replace(/万/, '') * 10000 : audienceNumber,
+                        audienceNumber: transformAudienceNumber(audienceText),
                         snapshot: $(ele.find('.imgbox img')[0]).attr('data-original'),
                         url: 'https://www.douyu.com' + ele.attr('href')
                     });
@@ -49,6 +53,32 @@ exports.crawlDouyuTv = function () {
             })
             .catch(err => {
                 console.log('斗鱼tv获取失败');
+                resolve([]);
+            });
+    });
+};
+
+exports.crawlZhanqiTv = function () {
+    return new Promise(resolve => {
+        get('https://www.zhanqi.tv/games/lol')
+            .then(({ text }) => {
+                let liveJson = [];
+                let $ = cheerio.load(text);
+                $('.clearfix.js-room-list-ul a').each((idx, ele) => {
+                    ele = $(ele);
+                    let audienceText = $(ele.find('span.views span.dv')[0]).text();
+                    liveJson.push({
+                        title: $(ele.find('.info-area>span.name')[0]).text(),
+                        anchor: $(ele.find('.anchor.anchor-to-cut.dv')[0]).text(),
+                        audienceNumber: transformAudienceNumber(audienceText),
+                        snapshot: $(ele.find('.imgBox img')[0]).attr('src'),
+                        url: 'https://www.zhanqi.tv' + ele.attr('href')
+                    });
+                });
+                resolve(liveJson);
+            })
+            .catch(err => {
+                console.log('获取战旗tv失败');
                 resolve([]);
             });
     });
