@@ -19,5 +19,12 @@ module.exports = {
         urlForDouyu: 'https://www.douyu.com/directory/game/Overwatch',
         urlForZhanqi: 'https://www.zhanqi.tv/chns/blizzard/watch',
         urlForHuya: 'http://www.huya.com/g/2174'
+    },
+    'dota2': {
+        name: 'DOTA2',
+        urlForPanda: 'http://www.panda.tv/cate/dota2',
+        urlForDouyu: 'https://www.douyu.com/directory/game/DOTA2',
+        urlForZhanqi: 'https://www.zhanqi.tv/games/dota2',
+        urlForHuya: 'http://www.huya.com/g/7'
     }
 }

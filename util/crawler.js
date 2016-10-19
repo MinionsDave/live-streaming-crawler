@@ -102,7 +102,7 @@ exports.crawlZhanqiTv = function (categoryPath) {
                 let liveJson = [];
                 let $ = cheerio.load(text),
                     $gameDomList = $('.clearfix.gameList a');
-                if (categoryPath === 'lol') {
+                if ($gameDomList.length === 0) {
                     $gameDomList = $('.clearfix.js-room-list-ul a');
                 }
                 $gameDomList.each((idx, ele) => {
