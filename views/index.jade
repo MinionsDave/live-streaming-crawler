@@ -4,7 +4,7 @@ block content
     #page-content-wrapper
         .header
             a.glyphicon.glyphicon-align-justify#menu-toggle
-            h3.categoryName 英雄联盟
+            h3.categoryName= category.name
         .container-fluid.liveList
             each item in liveJson
                 a.col-lg-3.col-md-4.col-sm-6.ellipsis(href='#{item.url}', target='_blank')

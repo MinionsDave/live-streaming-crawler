@@ -1,11 +1,26 @@
+-
+    var categoryList = [
+        {
+            name: '英雄联盟',
+            path: '/lol'
+        }, {
+            name: '炉石传说',
+            path: '/hearthstone'
+        }, {
+            name: '守望先锋',
+            path: '/overwatch'
+        }, {
+            name: 'DOTA2',
+            path: '/dota2'
+        }
+    ];
 
 #sidebar-wrapper
     ul.sidebar-nav
-        li
-            a(href='/lol') 英雄联盟
-        li
-            a(href='/hearthstone') 炉石传说
-        li
-            a(href='/overwatch') 守望先锋
-        li
-            a(href='/dota2') DOTA2
+        each item in categoryList
+            if category && category.path === item.path.substring(1)
+                li
+                    a.active(href='#{item.path}')= item.name
+            else
+                li
+                    a(href='#{item.path}')= item.name
