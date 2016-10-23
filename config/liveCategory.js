@@ -26,5 +26,40 @@ module.exports = {
         urlForDouyu: 'https://www.douyu.com/directory/game/DOTA2',
         urlForZhanqi: 'https://www.zhanqi.tv/games/dota2',
         urlForHuya: 'http://www.huya.com/g/7'
+    },
+    'wow': {
+        name: '魔兽世界',
+        urlForPanda: 'http://www.panda.tv/cate/wow',
+        urlForDouyu: 'https://www.douyu.com/directory/game/WOW',
+        urlForZhanqi: 'https://www.zhanqi.tv/chns/blizzard/wow',
+        urlForHuya: 'http://www.huya.com/g/8'
+    },
+    'CSGO': {
+        name: 'CSGO',
+        urlForPanda: 'http://www.panda.tv/cate/csgo',
+        urlForDouyu: 'https://www.douyu.com/directory/game/CSGO',
+        urlForZhanqi: 'https://www.zhanqi.tv/games/csgo',
+        urlForHuya: 'http://www.huya.com/g/862'
+    },
+    'cf': {
+        name: '穿越火线',
+        urlForPanda: 'http://www.panda.tv/cate/cf',
+        urlForDouyu: 'https://www.douyu.com/directory/game/CF',
+        urlForZhanqi: 'https://www.zhanqi.tv/games/csgo',
+        urlForHuya: 'http://www.huya.com/g/4'
+    },
+    'dnf': {
+        name: 'DNF',
+        urlForPanda: 'http://www.panda.tv/cate/dnf',
+        urlForDouyu: 'https://www.douyu.com/directory/game/DNF',
+        urlForZhanqi: 'https://www.zhanqi.tv/games/dnf',
+        urlForHuya: 'http://www.huya.com/g/2'
+    },
+    'beauty': {
+        name: '美女主播',
+        urlForPanda: 'http://www.panda.tv/cate/yzdr',
+        urlForDouyu: 'https://www.douyu.com/directory/game/yz',
+        urlForZhanqi: 'https://bb.zhanqi.tv/',
+        urlForHuya: 'http://www.huya.com/g/1663'
     }
 }
