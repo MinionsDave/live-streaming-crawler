@@ -20,7 +20,7 @@ function crawlLolForHuya (url) {
         get(url)
             .then(({ text }) => {
                 let liveJson = [];
-                for (item of JSON.parse(text).data.list) {
+                for (let item of JSON.parse(text).data.list) {
                     liveJson.push({
                         title: item.introduction,
                         anchor: item.nick,
@@ -38,6 +38,34 @@ function crawlLolForHuya (url) {
             });
     });
 }
+
+exports.crawlQuanminTv = function (categoryPath) {
+    const url = LiveCategory[categoryPath].urlForQuanmin;
+    if (!url) {
+        return [];
+    }
+    return new Promise(resolve => {
+        get(url)
+            .then(({ text }) => {
+                let liveJson = [];
+                for (let item of JSON.parse(text).data) {
+                    liveJson.push({
+                        title: item.title,
+                        anchor: item.nick,
+                        audienceNumber: item.view,
+                        snapshot: item.thumb,
+                        url: 'http://www.quanmin.tv/v/' + item.uid
+                    });
+                }
+                judgeDataAna(liveJson, '全民');
+                resolve(liveJson);
+            })
+            .catch(err => {
+                console.log('全民获取失败');
+                resolve([]);
+            });
+    });
+};
 
 exports.crawlPandaTv = function (categoryPath) {
     const url = LiveCategory[categoryPath].urlForPanda;
@@ -125,6 +153,7 @@ exports.crawlZhanqiTv = function (categoryPath) {
     });
 };
 
+
 exports.crawlHuya = function (categoryPath) {
     const url = LiveCategory[categoryPath].urlForHuya;
     if (categoryPath === 'lol') {
@@ -154,4 +183,32 @@ exports.crawlHuya = function (categoryPath) {
                 resolve([]);
             });
     });
+};
+
+exports.crawlLongzhu = function (categoryPath) {
+    const url = LiveCategory[categoryPath].urlForLongzhu;
+    return new Promise(resolve => {
+        get(url)
+            .then(({ text }) => {
+                let liveJson = [];
+                let $ = cheerio.load(text);
+                $('#list-con .livecard').each((idx, ele) => {
+                    ele = $(ele);
+                    let audienceText = $(ele.find('.livecard-meta-views .livecard-meta-item-text')[0]).text();
+                    liveJson.push({
+                        title: $(ele.find('h3')[0]).text(),
+                        anchor: $(ele.find('.livecard-modal-username')[0]).text(),
+                        audienceNumber: transformAudienceNumber(audienceText),
+                        snapshot: $(ele.find('.livecard-thumb')[0]).attr('src'),
+                        url: ele.attr('href')
+                    });
+                });
+                judgeDataAna(liveJson, '龙珠');
+                resolve(liveJson);
+            })
+            .catch(err => {
+                console.log('龙珠获取失败');
+                resolve([]);
+            });
+    });   
 };
