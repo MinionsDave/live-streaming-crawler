@@ -2,9 +2,19 @@ extends layout
 
 block content
     #page-content-wrapper
-        .header
-            a.glyphicon.glyphicon-align-justify#menu-toggle
-            h3.categoryName= category.name
+        .header.row
+            .col-md-8
+                a.glyphicon.glyphicon-align-justify#menu-toggle
+                h3.categoryName= category.name
+            .col-md-4.dropdown
+                .pull-right
+                    button#dLabel.btn.btn-primary(type='button', data-toggle='dropdown', aria-haspopup="true", aria-expanded="false")
+                        | 所有平台&nbsp;&nbsp;&nbsp;
+                        span.caret
+                    ul.dropdown-menu(aria-labelledby='dLabel', role='menu')
+                        li(role='presentation')
+                            a(role='menuitem') 熊猫
+                            a(role='menuitem') 虎牙
         .container-fluid.liveList
             each item in liveJson
                 a.col-lg-3.col-md-4.col-sm-6.ellipsis(href='#{item.url}', target='_blank')

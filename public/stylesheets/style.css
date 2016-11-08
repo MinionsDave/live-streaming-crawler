@@ -71,3 +71,8 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.header .dropdown {
+    padding-top: 13px;
+    padding-right: 45px;
+}
