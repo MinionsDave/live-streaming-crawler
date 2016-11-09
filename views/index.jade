@@ -11,7 +11,6 @@ block content
             longzhu: '龙珠'
         };
         var platform = platformList[category.platform];
-        console.log(platform)
 
     #page-content-wrapper
         .header.row
@@ -30,7 +29,11 @@ block content
                     ul.dropdown-menu(aria-labelledby='dLabel', role='menu')
                         each name, path in platformList
                             li(role='presentation')
-                                a(role='menuitem', href='/#{ category.path }/#{ path }')= name
+                                if platform !== name
+                                    a(role='menuitem', href='/#{ category.path }/#{ path }')= name
+                        if platform
+                            li(role='presentation')
+                                a(role='menuitem', href='/#{category.path}') 全部
         .container-fluid.liveList
             each item in liveJson
                 a.col-lg-3.col-md-4.col-sm-6.ellipsis(href='#{item.url}', target='_blank')
