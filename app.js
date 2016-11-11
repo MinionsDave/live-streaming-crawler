@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var compression = require('compression');
+var winston = require('winston');
+var expressWinston = require('express-winston');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -48,8 +50,20 @@ if (app.get('env') === 'development') {
   });
 }
 
-// production error handler
-// no stacktraces leaked to user
+// 生产环境中保留错误日志
+app.use(expressWinston.errorLogger({
+  transports: [
+    new winston.transports.Console({
+      json: true,
+      colorize: true
+    }),
+    new winston.transports.File({
+      filename: 'logs/error.log'
+    })
+  ]
+}));
+
+// 生产环境中的错误处理
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
