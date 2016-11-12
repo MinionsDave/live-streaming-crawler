@@ -153,7 +153,6 @@ exports.crawlZhanqiTv = function (categoryPath) {
     });
 };
 
-
 exports.crawlHuya = function (categoryPath) {
     const url = LiveCategory[categoryPath].urlForHuya;
     if (categoryPath === 'lol') {
@@ -210,5 +209,5 @@ exports.crawlLongzhu = function (categoryPath) {
                 console.log('龙珠获取失败');
                 resolve([]);
             });
-    });   
+    });
 };

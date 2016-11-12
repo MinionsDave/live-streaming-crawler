@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    #page-content-wrapper
+        .header.row
+            .col-md-8
+                a.glyphicon.glyphicon-align-justify#menu-toggle
+                h3.categoryName 关于本站
+        .container-fluid.author
+            ul.list-unstyled
+                li 本站源代码:
+                    a(href='https://github.com/MinionsDave/live-streaming-crawler' target='_blank') https://github.com/MinionsDave/live-streaming-crawler
+                li 有问题或者有什么建议都请发邮件给我: wudengguang@gmail.com
+                li 今日访问数量: #{count}

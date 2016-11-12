@@ -76,3 +76,9 @@ body {
     padding-top: 13px;
     padding-right: 45px;
 }
+
+.author ul {
+    padding-left: 50px;
+    margin-top: 20px;
+    line-height: 30px;
+}

@@ -4,6 +4,9 @@ const liveCategory = require('../config/liveCategory');
 
 exports.get = function ({ params: { categoryPath = 'lol' }}, res, next) {
     let category = liveCategory[categoryPath];
+    if (!category) {
+        return next();
+    }
     join(crawler.crawlHuya(categoryPath), crawler.crawlPandaTv(categoryPath), crawler.crawlDouyuTv(categoryPath), crawler.crawlZhanqiTv(categoryPath), crawler.crawlQuanminTv(categoryPath), crawler.crawlLongzhu(categoryPath))
         .then(jsonList => {
             let liveJson = [].concat(...jsonList);
