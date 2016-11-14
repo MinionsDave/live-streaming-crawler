@@ -5,4 +5,4 @@ clone下来之后运行npm install
 
  - 启动项目(默认端口3000) npm start
  - 运行测试用例(mocha + chai) npm test
- - 部署(pm2，使用80端口) npm deploy
+ - 部署(pm2，使用80端口) npm publish
