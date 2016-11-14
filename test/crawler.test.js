@@ -16,19 +16,31 @@ describe('## crawler APIs', () => {
 function commonCrawlerTest(crawlFnName, crawlFn) {
     describe(crawlFnName, () => {
         for(let item of Object.keys(categoryList)) {
+            let example;
             describe(`get ${item}`, () => {
-                it('should return the list in 2s', done => {
-                    // setTimeout(function() {
-                    //     done(new Error('timeout for 2s'));
-                    // }, 20000);
+                it('should return the list and list\'s length large than 0', done => {
                     crawlFn(item)
                         .then(list => {
                             expect(list).to.be.an('array');
                             expect(list.length).to.be.above(1);
+                            if (list instanceof Array && list.length > 0) {
+                                example = list[0];
+                                Object.freeze(example);
+                            }
                             done();
                         })
                         .catch(done);
                 });
+
+                for(let item of ['title', 'anchor', 'audienceNumber', 'snapshot', 'url']) {
+                    it(`the info should has the ${item}`, function () {
+                        if (example) {
+                            expect(example[item]).to.be.ok;
+                        } else {
+                            this.skip;
+                        }
+                    });
+                }
             });
         }
     });
