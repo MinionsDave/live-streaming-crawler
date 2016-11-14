@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=production PORT=80 pm2 start bin/www --name 'live-crawler'",
-    "test": "mocha -t 100000"
+    "start": "node bin/www",
+    "publish": "NODE_ENV=production PORT=80 pm2 start bin/www --name 'live-crawler'",
+    "test": "mocha -t 100000",
+    "run": "nodemon --debug bin/www"
   },
   "dependencies": {
     "babel-preset-es2015": "^6.16.0",
