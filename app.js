@@ -11,7 +11,7 @@ var expressWinston = require('express-winston');
 var count = require('./util/visitCount');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var author = require('./routes/author')
+var author = require('./routes/author');
 
 var app = express();
 
@@ -38,17 +38,12 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/author', author);
 
-// catch 404 and forward to error handler
+// 处理404
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  res.render('404');
 });
 
-// error handlers
-
-// development error handler
-// will print stacktrace
+// 开发环境中发送错误堆栈到前端
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);

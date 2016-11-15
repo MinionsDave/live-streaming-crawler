@@ -23,6 +23,9 @@ exports.get = function ({ params: { categoryPath = 'lol' }}, res, next) {
 
 exports.getOne = function ({ params: { categoryPath, platform }}, res, next) {
     let category = liveCategory[categoryPath];
+    if (!category || !crawler['crawl' + platform[0].toUpperCase() + platform.slice(1)]) {
+        return next();
+    }
     crawler['crawl' + platform[0].toUpperCase() + platform.slice(1)](categoryPath)
         .then(list => {
             list.sort((o1, o2) => o2.audienceNumber - o1.audienceNumber);
