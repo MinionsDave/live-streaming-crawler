@@ -13,6 +13,17 @@ describe('## Misc', () => {
             request(app)
                 .get('/lol')
                 .expect(200)
+                .then(done)
+                .catch(done);
+        });
+    });
+
+    describe('# 404 check', () => {
+        it('should return status code 404', done => {
+            request(app)
+                .get('/asd')
+                .expect(404)
+                .then(done)
                 .catch(done);
         });
     });
