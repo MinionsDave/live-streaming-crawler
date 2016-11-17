@@ -32,6 +32,14 @@ body {
     height: 170px;
 }
 
+.liveList img.platform-icon {
+    width: 50px;
+    height: 27px;
+    position: absolute;
+    top: 0;
+    right: 20px;
+}
+
 .liveList a {
     color: #000;
     text-decoration: none;

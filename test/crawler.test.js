@@ -32,7 +32,7 @@ function commonCrawlerTest(crawlFnName, crawlFn) {
                         .catch(done);
                 });
 
-                for(let item of ['title', 'anchor', 'audienceNumber', 'snapshot', 'url']) {
+                for(let item of ['title', 'anchor', 'audienceNumber', 'snapshot', 'url', 'platformIcon']) {
                     it(`the info should has the ${item}`, function () {
                         if (example) {
                             expect(example[item]).to.be.ok;

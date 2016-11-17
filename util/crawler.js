@@ -26,7 +26,8 @@ function crawlLolForHuya (url) {
                         anchor: item.nick,
                         audienceNumber: item.totalCount,
                         snapshot: item.screenshot,
-                        url: 'http://www.huya.com/' + item.privateHost
+                        url: 'http://www.huya.com/' + item.privateHost,
+                        platformIcon: '/images/icon3.png'
                     });
                 }
                 judgeDataAna(liveJson, '虎牙');
@@ -54,7 +55,8 @@ exports.crawlQuanminTv = function (categoryPath) {
                         anchor: item.nick,
                         audienceNumber: item.view,
                         snapshot: item.thumb,
-                        url: 'http://www.quanmin.tv/v/' + item.uid
+                        url: 'http://www.quanmin.tv/v/' + item.uid,
+                        platformIcon: '/images/icon5.png'
                     });
                 }
                 judgeDataAna(liveJson, '全民');
@@ -81,7 +83,8 @@ exports.crawlPandaTv = function (categoryPath) {
                         anchor: $(ele.find('.video-nickname')[0]).text(),
                         audienceNumber: $(ele.find('.video-number')[0]).text(),
                         snapshot: $(ele.find('.video-img-lazy')[0]).attr('data-original'),
-                        url: 'http://www.panda.tv' + ele.attr('href')
+                        url: 'http://www.panda.tv' + ele.attr('href'),
+                        platformIcon: '/images/icon5.png'
                     });
                 });
                 judgeDataAna(liveJson, '熊猫tv');
@@ -109,7 +112,8 @@ exports.crawlDouyuTv = function (categoryPath) {
                         anchor: $(ele.find('.dy-name')[0]).text(),
                         audienceNumber: transformAudienceNumber(audienceText),
                         snapshot: $(ele.find('.imgbox img')[0]).attr('data-original'),
-                        url: 'https://www.douyu.com' + ele.attr('href')
+                        url: 'https://www.douyu.com' + ele.attr('href'),
+                        platformIcon: '/images/icon1.png'
                     });
                 });
                 judgeDataAna(liveJson, '斗鱼tv');
@@ -141,7 +145,8 @@ exports.crawlZhanqiTv = function (categoryPath) {
                         anchor: $(ele.find('.anchor.anchor-to-cut.dv')[0]).text(),
                         audienceNumber: transformAudienceNumber(audienceText),
                         snapshot: $(ele.find('.imgBox img')[0]).attr('src'),
-                        url: 'https://www.zhanqi.tv' + ele.attr('href')
+                        url: 'https://www.zhanqi.tv' + ele.attr('href'),
+                        platformIcon: '/images/icon2.png'
                     });
                 });
                 judgeDataAna(liveJson, '战旗tv');
@@ -171,7 +176,8 @@ exports.crawlHuya = function (categoryPath) {
                         anchor: $(ele.find('i.nick')[0]).text(),
                         audienceNumber: transformAudienceNumber(audienceText),
                         snapshot: $(ele.find('a.video-info img')[0]).attr('src'),
-                        url: $(ele.find('a.video-info')).attr('href')
+                        url: $(ele.find('a.video-info')).attr('href'),
+                        platformIcon: '/images/icon3.png'
                     });
                 });
                 judgeDataAna(liveJson, '虎牙');
@@ -199,7 +205,8 @@ exports.crawlLongzhu = function (categoryPath) {
                         anchor: $(ele.find('.livecard-modal-username')[0]).text(),
                         audienceNumber: transformAudienceNumber(audienceText),
                         snapshot: $(ele.find('.livecard-thumb')[0]).attr('src'),
-                        url: ele.attr('href')
+                        url: ele.attr('href'),
+                        platformIcon: '/images/icon6.png'
                     });
                 });
                 judgeDataAna(liveJson, '龙珠');
