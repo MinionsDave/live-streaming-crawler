@@ -84,7 +84,7 @@ exports.crawlPandaTv = function (categoryPath) {
                         audienceNumber: $(ele.find('.video-number')[0]).text(),
                         snapshot: $(ele.find('.video-img-lazy')[0]).attr('data-original'),
                         url: 'http://www.panda.tv' + ele.attr('href'),
-                        platformIcon: '/images/icon5.png'
+                        platformIcon: '/images/icon0.png'
                     });
                 });
                 judgeDataAna(liveJson, '熊猫tv');
