@@ -18,18 +18,21 @@ function commonCrawlerTest(crawlFnName, crawlFn) {
         for(let item of Object.keys(categoryList)) {
             let example;
             describe(`get ${item}`, () => {
-                it('should return the list and list\'s length large than 0', done => {
-                    crawlFn(item)
-                        .then(list => {
-                            expect(list).to.be.an('array');
-                            expect(list.length).to.be.above(1);
-                            if (list instanceof Array && list.length > 0) {
-                                example = list[0];
-                                Object.freeze(example);
-                            }
-                            done();
-                        })
-                        .catch(done);
+                it('should return the list and list\'s length large than 0', function (done) {
+                    let res = crawlFn(item);
+                    if (res instanceof Array) {
+                        return this.skip();
+                    }
+                    res.then(list => {
+                        expect(list).to.be.an('array');
+                        expect(list.length).to.be.above(1);
+                        if (list instanceof Array && list.length > 0) {
+                            example = list[0];
+                            Object.freeze(example);
+                        }
+                        done();
+                    })
+                    .catch(done);
                 });
 
                 for(let item of ['title', 'anchor', 'audienceNumber', 'snapshot', 'url', 'platformIcon']) {
@@ -37,7 +40,7 @@ function commonCrawlerTest(crawlFnName, crawlFn) {
                         if (example) {
                             expect(example[item]).to.be.ok;
                         } else {
-                            this.skip;
+                            this.skip();
                         }
                     });
                 }

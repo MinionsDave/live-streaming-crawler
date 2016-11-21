@@ -73,7 +73,7 @@ module.exports = {
         name: '美女主播',
         urlForPanda: 'http://www.panda.tv/cate/yzdr',
         urlForDouyu: 'https://www.douyu.com/directory/game/yz',
-        urlForZhanqi: 'https://bb.zhanqi.tv/',
+        // urlForZhanqi: 'https://bb.zhanqi.tv/',
         urlForHuya: 'http://www.huya.com/g/1663',
         urlForQuanmin: 'http://www.quanmin.tv/json/categories/beauty/list.json',
         urlForLongzhu: 'http://longzhu.com/channels/belle'

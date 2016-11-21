@@ -43,6 +43,7 @@ function crawlLolForHuya (url) {
 exports.crawlQuanminTv = function (categoryPath) {
     const url = LiveCategory[categoryPath].urlForQuanmin;
     if (!url) {
+        console.log(`全民tv没有${categoryPath}类目`);
         return [];
     }
     return new Promise(resolve => {
@@ -128,6 +129,10 @@ exports.crawlDouyuTv = function (categoryPath) {
 
 exports.crawlZhanqiTv = function (categoryPath) {
     const url = LiveCategory[categoryPath].urlForZhanqi;
+    if (!url) {
+        console.log(`战旗tv没有${categoryPath}类目`);
+        return [];
+    }
     return new Promise(resolve => {
         get(url)
             .then(({ text }) => {
@@ -192,6 +197,10 @@ exports.crawlHuya = function (categoryPath) {
 
 exports.crawlLongzhu = function (categoryPath) {
     const url = LiveCategory[categoryPath].urlForLongzhu;
+    if (!url) {
+        console.log(`全民tv没有${categoryPath}类目`);
+        return [];
+    }
     return new Promise(resolve => {
         get(url)
             .then(({ text }) => {
