@@ -40,6 +40,7 @@ app.use('/author', author);
 
 // 处理404
 app.use(function(req, res, next) {
+  res.status(404);
   res.render('404');
 });
 
