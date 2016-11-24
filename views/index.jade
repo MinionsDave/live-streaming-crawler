@@ -35,16 +35,17 @@ block content
                             li(role='presentation')
                                 a(role='menuitem', href='/#{category.path}') 全部
         .container-fluid.liveList
-            each item in liveJson
-                a.col-lg-3.col-md-4.col-sm-6.ellipsis(href='#{item.url}', target='_blank')
-                    img(src='#{item.snapshot}')
-                    img.platform-icon(src='#{item.platformIcon}')
-                    h5 &nbsp;#{item.title}
-                    .row
-                        .col-sm-7
-                            span.glyphicon.glyphicon-user
-                            | &nbsp;#{item.anchor}
-                        .col-sm-5.text-right
-                            span.glyphicon.glyphicon-eye-open
-                            | &nbsp;#{item.audienceNumber}
+            .row
+                each item in liveJson
+                    a.col-lg-3.col-md-4.col-sm-6.ellipsis(href='#{item.url}', target='_blank')
+                        img(src='#{item.snapshot}')
+                        img.platform-icon(src='#{item.platformIcon}')
+                        h5 &nbsp;#{item.title}
+                        .row
+                            .col-sm-7
+                                span.glyphicon.glyphicon-user
+                                | &nbsp;#{item.anchor}
+                            .col-sm-5.text-right
+                                span.glyphicon.glyphicon-eye-open
+                                | &nbsp;#{item.audienceNumber}
 
