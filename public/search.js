@@ -10,7 +10,19 @@ function searchPanda (keyword) {
         request
             .get(url)
             .then(({ text }) => {
-                resolve(JSON.parse(text).items);
+                const originalJson = JSON.parse(text).data.items;
+                let liveJson = [];
+                for(let item of originalJson) {
+                    liveJson.push({
+                        title: item.name,
+                        audienceNumber: item.person_num,
+                        snapshot: item.pictures.img,
+                        url: `http://www.panda.tv/${item.roomid}`,
+                        platformIcon: '/images/icon3.png'
+                    });
+                }
+                console.log(liveJson);
+                resolve(liveJson);
             })
             .catch(err => {
                 console.log('熊猫tv搜索失败');
