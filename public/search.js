@@ -1,17 +1,21 @@
 const cheerio = require('cheerio');
 const Promise = require('bluebird');
+const request = require('superagent');
 
-let get = Promise.promisify(require('superagent').get);
+const searchUrl = require('../config/searchUrl');
 
-function searchPanda (queryStr) {
+function searchPanda (keyword) {
     return new Promise(resolve => {
-        const url = 'http://www.panda.tv/search?kw=' + queryStr;
-        console.log(url);
-        get(url)
+        const url = searchUrl.createPandaSearchUrl(keyword);
+        request
+            .get(url)
             .then(({ text }) => {
-                // console.log(text);
+                resolve(JSON.parse(text).items);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log('熊猫tv搜索失败');
+                console.log(err);
+            });
     });
 }
 
