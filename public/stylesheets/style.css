@@ -91,3 +91,19 @@ body {
     margin-top: 20px;
     line-height: 30px;
 }
+
+.bot {
+    padding: 10px 0;
+    background-color: rgb(50, 50, 50);
+    color: #eee;
+    font-size: 13px;
+}
+
+.bot a {
+    color: #eee;
+    padding-right: 20px;
+}
+
+.bot a:hover {
+    color: #aaa;
+}
