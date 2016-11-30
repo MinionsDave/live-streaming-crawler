@@ -3,5 +3,9 @@ exports.createPandaSearchUrl = function (keyword) {
 };
 
 exports.createHuyaSearchUrl = function (keyword) {
-    return `http://search.huya.com/?m=Search&do=getSearchContent&q=${keyword}&uid=0&app=11&v=4&typ=-5&rows=40`;
-}
+    return encodeURI(`http://search.huya.com/?m=Search&do=getSearchContent&q=${keyword}&uid=0&app=11&v=4&typ=-5&rows=40`);
+};
+
+exports.createDouyuSearchUrl = function (keyword) {
+    return encodeURI(`https://www.douyu.com/search/${keyword}?label=1&type=2`);
+};
