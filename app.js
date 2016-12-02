@@ -8,6 +8,7 @@ var compression = require('compression');
 var winston = require('winston');
 var expressWinston = require('express-winston');
 
+var sendErrMailFn = require('./util/mail');
 var count = require('./util/visitCount');
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -67,6 +68,12 @@ app.use(expressWinston.errorLogger({
     })
   ]
 }));
+
+// 错误时发送邮件提醒
+app.use(function (err, req, res, next) {
+  sendErrMailFn(err);
+  next(err);
+});
 
 // 生产环境中的错误处理
 app.use(function(err, req, res, next) {
