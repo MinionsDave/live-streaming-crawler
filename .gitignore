@@ -1,3 +1,4 @@
 node_modules/
 logs
 coverage
+config/smtp.js
