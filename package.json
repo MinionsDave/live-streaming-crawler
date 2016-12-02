@@ -20,6 +20,7 @@
     "express-winston": "^2.0.0",
     "jade": "~1.11.0",
     "morgan": "~1.7.0",
+    "nodemailer": "^2.6.4",
     "serve-favicon": "~2.3.0",
     "superagent": "^2.3.0",
     "utf8": "^2.1.2",
