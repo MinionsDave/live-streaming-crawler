@@ -10,11 +10,10 @@ function sendErrorEmail(err) {
         subject: '直播整合平台出现了没有程序处理的异常',
         html: `<pre>${err}</pre>`
     };
-    transporter.sendMail(mailOptions, function (err, info) {
+    transporter.sendMail(mailOptions, function (err) {
         if (err) {
             return console.log(err);
         }
-        console.log('Message sent:' + info.response);
     });
 }
 
