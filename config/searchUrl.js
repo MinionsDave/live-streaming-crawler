@@ -9,3 +9,7 @@ exports.createHuyaSearchUrl = function(keyword) {
 exports.createDouyuSearchUrl = function(keyword) {
     return encodeURI(`https://www.douyu.com/search/${keyword}?label=1&type=2`);
 };
+
+exports.createQuanminSearchUrl = function() {
+    return ' http://www.quanmin.tv/site/search?p=5&rid=-1&rcat=-1&uid=-1&net=0&screen=3&device=rwduvf64prarqwhnzjtjj1s1cl80lcajhvuung25&refer=search&sw=1280&sh=800';
+};

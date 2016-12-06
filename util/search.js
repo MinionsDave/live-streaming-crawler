@@ -93,4 +93,29 @@ function searchDouyu(keyword) {
     });
 }
 
-searchDouyu('赵信');
+function searchQuanmin(keyword) {
+    return new Promise((resolve) => {
+        const url = searchUrl.createQuanminSearchUrl();
+        console.log(url);
+        request
+            .post(url)
+            .send({
+                p: {
+                    categoryId: 0,
+                    key: keyword,
+                    page: 0,
+                    size: 40,
+                },
+            })
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log('全民tv搜索失败');
+                console.log(err);
+            });
+    });
+}
+
+searchQuanmin('秋日');
