@@ -1,20 +1,19 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var compression = require('compression');
-var winston = require('winston');
-var expressWinston = require('express-winston');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const compression = require('compression');
+const winston = require('winston');
+const expressWinston = require('express-winston');
 
-var sendErrMailFn = require('./util/mail');
-var count = require('./util/visitCount');
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var author = require('./routes/author');
+const sendErrMailFn = require('./util/mail');
+const count = require('./util/visitCount');
+const routes = require('./routes/index');
+const author = require('./routes/author');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,7 +24,7 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -36,7 +35,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/', routes);
-app.use('/users', users);
 app.use('/author', author);
 
 // 处理404
@@ -51,7 +49,7 @@ if (app.get('env') === 'development') {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
-      error: err
+      error: err,
     });
   });
 }
@@ -61,16 +59,16 @@ app.use(expressWinston.errorLogger({
   transports: [
     new winston.transports.Console({
       json: true,
-      colorize: true
+      colorize: true,
     }),
     new winston.transports.File({
-      filename: 'logs/error.log'
-    })
-  ]
+      filename: 'logs/error.log',
+    }),
+  ],
 }));
 
 // 错误时发送邮件提醒
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
   sendErrMailFn(err);
   next(err);
 });
@@ -80,7 +78,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
-    error: {}
+    error: {},
   });
 });
 

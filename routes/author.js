@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', function(req, res, next) {
     res.render('author', {
-        count: count.get()
+        count: count.get(),
     });
 });
 

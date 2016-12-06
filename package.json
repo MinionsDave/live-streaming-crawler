@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint-config-google": "^0.7.1",
     "gulp": "^3.9.1",
     "gulp-csso": "^2.0.0",
     "gulp-eslint": "^3.0.1",

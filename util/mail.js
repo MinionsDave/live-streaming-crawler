@@ -8,9 +8,9 @@ function sendErrorEmail(err) {
         from: '651882883@qq.com',
         to: 'wudengguang@gmail.com',
         subject: '直播整合平台出现了没有程序处理的异常',
-        html: `<pre>${err}</pre>`
+        html: `<pre>${err}</pre>`,
     };
-    transporter.sendMail(mailOptions, function (err) {
+    transporter.sendMail(mailOptions, function(err) {
         if (err) {
             return console.log(err);
         }

@@ -9,7 +9,7 @@ chai.config.includeStack = true;
 
 describe('## Misc', () => {
     describe('# health check', () => {
-        it('should ok', done => {
+        it('should ok', (done) => {
             request(app)
                 .get('/lol')
                 .expect(200, done);
@@ -17,10 +17,10 @@ describe('## Misc', () => {
     });
 
     describe('# 404 check', () => {
-        it('should return status code 404', done => {
+        it('should return status code 404', (done) => {
             request(app)
                 .get('/asd')
                 .expect(404, done);
         });
     });
-})
+});

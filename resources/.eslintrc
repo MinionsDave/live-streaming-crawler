@@ -4,5 +4,8 @@
   },
   "globals": {
     "$": true
+  },
+  "rules": {
+    "no-var": 0
   }
 }
