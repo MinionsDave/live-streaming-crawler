@@ -4,7 +4,6 @@ const mailConfig = require('../config/smtp');
 const transporter = nodemailer.createTransport(mailConfig);
 
 function sendErrorEmail(err) {
-    console.log('开始发送错误邮件');
     const mailOptions = {
         from: '651882883@qq.com',
         to: 'wudengguang@gmail.com',

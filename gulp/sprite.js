@@ -3,13 +3,14 @@ const gulp = require('gulp'),
     buffer = require('vinyl-buffer'),
     csso = require('gulp-csso'),
     imagemin = require('gulp-imagemin'),
-    merge = require('merge-stream');
+    merge = require('merge-stream'),
+    path = require('path');
 
-const conf = require('./gulp/config');
+const conf = require('./config');
 
 
 gulp.task('sprite', function () {
-    let spriteData = gulp.src('resources/images/*.png')
+    let spriteData = gulp.src(path.join(conf.paths.src, '/images/*.png'))
         .pipe(spritesmith({
             imgName: 'sprite.png',
             cssName: 'sprite.css'
@@ -18,11 +19,11 @@ gulp.task('sprite', function () {
     let imgStream = spriteData.img
         .pipe(buffer())
         .pipe(imagemin())
-        .pipe(gulp.dest('public/images'));
+        .pipe(gulp.dest(path.join(conf.paths.dest, '/images')));
 
     let cssStream = spriteData.css
         .pipe(csso())
-        .pipe(gulp.dest('public/stylesheets'));
+        .pipe(gulp.dest(path.join(conf.paths.dest, '/stylesheets')));
 
     return merge(imgStream, cssStream);
 });

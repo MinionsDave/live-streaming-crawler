@@ -1,4 +1,5 @@
-exports.path = {
+exports.paths = {
     src: 'resources',
-    dest: 'publish'
+    dest: 'publish',
+    startFile: 'bin/www'
 }
