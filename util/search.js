@@ -93,6 +93,11 @@ function searchDouyu(keyword) {
     });
 }
 
+/*
+ * 返回的json对象中
+ * play_status为true的为正在直播
+ * play_status为false的没在直播
+*/
 function searchQuanmin(keyword) {
     return new Promise((resolve) => {
         const url = searchUrl.createQuanminSearchUrl();
@@ -108,8 +113,8 @@ function searchQuanmin(keyword) {
                 },
             })
             .set('Content-Type', 'application/x-www-form-urlencoded')
-            .then((res) => {
-                console.log(res);
+            .then(({text}) => {
+                const originalJson = JSON.parse(text).data.items;
             })
             .catch((err) => {
                 console.log('全民tv搜索失败');
@@ -118,4 +123,52 @@ function searchQuanmin(keyword) {
     });
 }
 
-searchQuanmin('秋日');
+function searchLongzhu(keyword) {
+    return new Promise((resolve) => {
+        const url = searchUrl.createLongzhuUrl(keyword);
+        request
+            .get(url)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log('龙珠tv搜索失败');
+                console.log(err);
+            });
+    });
+}
+
+/*
+ * 这个是否在直播没有明显的标志
+ * 估计观众为0的就是没有在直播
+ * 大于0的就是在直播的
+*/
+function searchZhanqi(keyword) {
+    return new Promise((resolve) => {
+        const url = searchUrl.createZhanqiSearchUrl(keyword);
+        request
+            .get(url)
+            .then(({text}) => {
+                let $ = cheerio.load(text);
+                let liveJson = [];
+                $('a.js-jump-link').each((idx, ele) => {
+                    ele = $(ele);
+                    liveJson.push({
+                        title: $(ele.find('p.room-name')[0]).text(),
+                        anchor: $(ele.find('.anchor')[0]).text(),
+                        audienceNumber: $(ele.find('.meat span.dv')[0]).text(),
+                        snapshot: $(ele.find('.img-box img')[0]).attr('src'),
+                        url: 'https://www.zhanqi.tv' + ele.attr('href'),
+                        platformIcon: '/images/icon2.png',
+                    });
+                });
+                console.log(liveJson);
+            })
+            .catch((err) => {
+                console.log('战旗tv搜索失败');
+                console.log(err);
+            });
+    });
+}
+
+searchZhanqi('三夏');
