@@ -1,6 +1,7 @@
 const cheerio = require('cheerio');
 const Promise = require('bluebird');
 const request = require('superagent');
+const nativeRequest = Promise.promisify(require('request'));
 
 const searchUrl = require('../config/searchUrl');
 
@@ -124,18 +125,27 @@ function searchQuanmin(keyword) {
 }
 
 function searchLongzhu(keyword) {
-    return new Promise((resolve) => {
-        const url = searchUrl.createLongzhuUrl(keyword);
-        request
-            .get(url)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                console.log('龙珠tv搜索失败');
-                console.log(err);
-            });
-    });
+    const options = {
+        method: 'GET',
+        url: searchUrl.createLongzhuSearchUrl(),
+        qs: {
+            title: keyword,
+            from: 'tga',
+            sortStr: 'relate',
+            pageIndex: '0',
+            pageSize: '16',
+        },
+    };
+    nativeRequest(options)
+        .then(({body}) => {
+            // console.log(JSON.parse(body).items);
+            const originJson = JSON.parse(body).items;
+            console.log(originJson);
+        })
+        .catch((err) => {
+            console.log(err);
+            console.log('龙珠tv获取失败');
+        });
 }
 
 /*
@@ -171,4 +181,4 @@ function searchZhanqi(keyword) {
     });
 }
 
-searchZhanqi('三夏');
+searchLongzhu('开开心心');

@@ -14,8 +14,8 @@ exports.createQuanminSearchUrl = function() {
     return 'http://www.quanmin.tv/site/search?p=5&rid=-1&rcat=-1&uid=-1&net=0&screen=3&device=rwduvf64prarqwhnzjtjj1s1cl80lcajhvuung25&refer=search&sw=1280&sh=800';
 };
 
-exports.createLongzhuSearchUrl = function(keyword) {
-    return encodeURI(`http://searchapi.plu.cn/api/search/room?title=${keyword}&from=tga&sortStr=relate&pageIndex=0&pageSize=16&callback=_callbacks_._1swoxrgiwecjlak`);
+exports.createLongzhuSearchUrl = function() {
+    return 'http://searchapi.plu.cn/api/search/room';
 };
 
 exports.createZhanqiSearchUrl = function(keyword) {
