@@ -13,7 +13,7 @@ const searchUrl = require('../config/searchUrl');
  *
  * @async
  * @param {string} keyword - 搜索的关键字
- * @return {Promise.<Array.<Object> | []>}
+ * @return {Promise.<Array.<Object>>}
 */
 function searchPanda(keyword) {
     return new Promise((resolve) => {
