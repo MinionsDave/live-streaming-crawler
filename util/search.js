@@ -5,29 +5,36 @@ const nativeRequest = Promise.promisify(require('request'));
 
 const searchUrl = require('../config/searchUrl');
 
+/**
+ * 搜索熊猫tv的方法
+ * 返回的reliable为1表示正在直播
+ * 2表示没在直播
+ * 搜索失败会直接resolve空数组
+ *
+ * @async
+ * @param {string} keyword - 搜索的关键字
+ * @return {Promise.<Array.<Object> | []>}
+*/
 function searchPanda(keyword) {
     return new Promise((resolve) => {
-        const url = searchUrl.createPandaSearchUrl(keyword);
         request
-            .get(url)
+            .get(searchUrl.createPandaSearchUrl(keyword))
             .then(({text}) => {
-                const originalJson = JSON.parse(text).data.items;
-                let liveJson = [];
-                for(let item of originalJson) {
-                    liveJson.push({
-                        title: item.name,
-                        audienceNumber: item.person_num,
-                        snapshot: item.pictures.img,
-                        url: `http://www.panda.tv/${item.roomid}`,
-                        platformIcon: '/images/icon3.png',
-                    });
-                }
-                console.log(liveJson);
-                resolve(liveJson);
+                resolve(JSON.parse(text).data.items.map((item) => ({
+                    title: item.name,
+                    audienceNumber: item.person_num,
+                    snapshot: item.pictures.img,
+                    url: `http://www.panda.tv/${item.roomid}`,
+                    platformIcon: '/images/icon3.png',
+                    anchor: item.nickname,
+                    category: item.classification,
+                    onlineFlag: item.reliable == 1,
+                })));
             })
             .catch((err) => {
                 console.log('熊猫tv搜索失败');
                 console.log(err);
+                resolve([]);
             });
     });
 }
@@ -181,4 +188,13 @@ function searchZhanqi(keyword) {
     });
 }
 
-searchLongzhu('开开心心');
+module.exports = {
+    searchPanda,
+    searchHuya,
+    searchDouyu,
+    searchQuanmin,
+    searchLongzhu,
+    searchZhanqi,
+};
+
+searchPanda('957').then(console.log);
