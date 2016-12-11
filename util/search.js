@@ -118,17 +118,18 @@ function searchDouyu(keyword) {
     });
 }
 
-/*
- * 返回的json对象中
- * play_status为true的为正在直播
- * play_status为false的没在直播
+/**
+ * 搜索全民的方法
+ * play_status为true时正在直播
+ *
+ * @async
+ * @param {string} keyword - 搜索的关键字
+ * @return {Promise.<Array.<Object>>}
 */
 function searchQuanmin(keyword) {
     return new Promise((resolve) => {
-        const url = searchUrl.createQuanminSearchUrl();
-        console.log(url);
         request
-            .post(url)
+            .post(searchUrl.createQuanminSearchUrl())
             .send({
                 p: {
                     categoryId: 0,
@@ -137,17 +138,37 @@ function searchQuanmin(keyword) {
                     size: 40,
                 },
             })
-            .set('Content-Type', 'application/x-www-form-urlencoded')
             .then(({text}) => {
-                const originalJson = JSON.parse(text).data.items;
+                resolve(JSON.parse(text).data.items.map((item) => ({
+                    title: item.title,
+                    audienceNumber: item.view,
+                    snapshot: item.thumb,
+                    url: 'http://www.quanmin.tv/v/' + item.uid,
+                    platformIcon: '/images/icon5.png',
+                    anchor: item.nick,
+                    category: item.category_name,
+                    onlineFlag: item.play_status,
+                })));
             })
             .catch((err) => {
                 console.log('全民tv搜索失败');
                 console.log(err);
+                resolve([]);
             });
     });
 }
 
+/**
+ * 搜索龙珠的方法
+ * isSign为1表示正在直播
+ * live字段为其直播信息
+ * 有点缺陷就是没有直播截图
+ * 因为不知道为什么用superagent获取不了，所以用了request
+ *
+ * @async
+ * @param {string} keyword - 搜索的关键字
+ * @return {Promise.<Array.<Object>>}
+*/
 function searchLongzhu(keyword) {
     const options = {
         method: 'GET',
@@ -160,16 +181,26 @@ function searchLongzhu(keyword) {
             pageSize: '16',
         },
     };
-    nativeRequest(options)
-        .then(({body}) => {
-            // console.log(JSON.parse(body).items);
-            const originJson = JSON.parse(body).items;
-            console.log(originJson);
-        })
-        .catch((err) => {
-            console.log(err);
-            console.log('龙珠tv获取失败');
-        });
+    return new Promise((resolve) => {
+        nativeRequest(options)
+            .then(({body}) => {
+                resolve(JSON.parse(body).items.map((item) => ({
+                    title: item.live.title,
+                    audienceNumber: item.live.onlineCount,
+                    // snapshot: item.game_screenshot,
+                    url: `http://star.longzhu.com/${item.live.url}`,
+                    platformIcon: '/images/icon6.png',
+                    anchor: item.name,
+                    category: item.gameName,
+                    onlineFlag: item.live.isLive,
+                })));
+            })
+            .catch((err) => {
+                console.log('龙珠tv获取失败');
+                console.log(err);
+                resolve([]);
+            });
+    });
 }
 
 /*
@@ -214,4 +245,4 @@ module.exports = {
     searchZhanqi,
 };
 
-searchDouyu('皇子').then(console.log);
+searchLongzhu('古手羽').then(console.log);
