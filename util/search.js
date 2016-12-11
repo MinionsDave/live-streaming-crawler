@@ -4,6 +4,7 @@ const request = require('superagent');
 const nativeRequest = Promise.promisify(require('request'));
 
 const searchUrl = require('../config/searchUrl');
+const transformAudienceNumber = require('./transformAudienceNumber');
 
 /**
  * 搜索熊猫tv的方法
@@ -39,41 +40,53 @@ function searchPanda(keyword) {
     });
 }
 
-/*
- * 返回的response对象中
- * 1的为相关主播
- * 3为进行中的直播
- * 122为相关视频
- */
+/**
+ * 搜索虎牙的方法
+ * 返回的对象中
+ * 1为匹配到的主播, gameLiveOn 代表是否正在直播
+ * 3为正在进行的直播，目前就展示全部正在直播的
+ * 122为视频，暂时没用
+ * 1024和20251为空，不知道干什么的
+ * 搜索失败会直接resolve空数组
+ *
+ * @async
+ * @param {string} keyword - 搜索的关键字
+ * @return {Promise.<Array.<Object>>}
+*/
 function searchHuya(keyword) {
     return new Promise((resolve) => {
-        const url = searchUrl.createHuyaSearchUrl(keyword);
-        console.log(url);
         request
-            .get(url)
+            .get(searchUrl.createHuyaSearchUrl(keyword))
             .then(({text}) => {
-                const originalJson = JSON.parse(text).response;
-                console.log(originalJson);
-                let liveJson = [];
-                // for(let item of originalJson) {
-                //     liveJson.push({
-                //         title: item.name,
-                //         audienceNumber: item.person_num,
-                //         snapshot: item.pictures.img,
-                //         url: `http://www.panda.tv/${item.roomid}`,
-                //         platformIcon: '/images/icon3.png'
-                //     });
-                // }
-                // console.log(liveJson);
-                resolve(liveJson);
+                resolve(JSON.parse(text).response['3'].docs.map((item) => ({
+                    title: item.game_introduction,
+                    audienceNumber: item.game_total_count,
+                    snapshot: item.game_screenshot,
+                    url: `http://www.huya.com/${item.game_privateHost}`,
+                    platformIcon: '/images/icon3.png',
+                    anchor: item.game_nick,
+                    category: item.gameName,
+                    onlineFlag: true,
+                })));
             })
             .catch((err) => {
                 console.log('虎牙tv搜索失败');
                 console.log(err);
+                resolve([]);
             });
     });
 }
 
+/**
+ * 搜索斗鱼的方法
+ * 直接返回html页面
+ * 如果页面中对应元素带有正在直播的标签则为正在直播
+ * 搜索失败会直接resolve空数组
+ *
+ * @async
+ * @param {string} keyword - 搜索的关键字
+ * @return {Promise.<Array.<Object>>}
+*/
 function searchDouyu(keyword) {
     return new Promise((resolve) => {
         const url = searchUrl.createDouyuSearchUrl(keyword);
@@ -84,19 +97,23 @@ function searchDouyu(keyword) {
                 let liveJson = [];
                 $('#search-room-list a').each((idx, ele) => {
                     ele = $(ele);
-                    // if (ele.find('i.icon_live')) {
-                        liveJson.push({
-                            title: ele.attr('title'),
-                            anchor: $(ele.find('h3.ellipsis')[0]).text(),
-                            audienceNumber: $(ele.find('.dy-num')[0]).text(),
-                        });
-                    // }
+                    liveJson.push({
+                        title: ele.attr('title'),
+                        audienceNumber: transformAudienceNumber($(ele.find('.dy-num')[0]).text()),
+                        snapshot: $(ele.find('.imgbox img')[0]).attr('src'),
+                        url: 'https://www.douyu.com' + ele.attr('href'),
+                        platformIcon: '/images/icon1.png',
+                        anchor: $(ele.find('h3.ellipsis')[0]).text(),
+                        category: $(ele.find('.tag')[0]).text(),
+                        onlineFlag: Boolean($(ele.find('.icon_live')).length),
+                    });
                 });
-                console.log(liveJson);
+                resolve(liveJson);
             })
             .catch((err) => {
                 console.log('斗鱼tv搜索失败');
                 console.log(err);
+                resolve([]);
             });
     });
 }
@@ -197,4 +214,4 @@ module.exports = {
     searchZhanqi,
 };
 
-searchPanda('957').then(console.log);
+searchDouyu('皇子').then(console.log);

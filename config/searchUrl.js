@@ -7,7 +7,7 @@ exports.createHuyaSearchUrl = function(keyword) {
 };
 
 exports.createDouyuSearchUrl = function(keyword) {
-    return encodeURI(`https://www.douyu.com/search/${keyword}?label=1&type=2`);
+    return encodeURI(`https://www.douyu.com/search/${keyword}?label=2&type=2`);
 };
 
 exports.createQuanminSearchUrl = function() {

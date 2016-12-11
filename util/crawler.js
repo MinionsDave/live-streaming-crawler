@@ -2,6 +2,7 @@ const cheerio = require('cheerio');
 const Promise = require('bluebird');
 
 const LiveCategory = require('../config/liveCategory');
+const transformAudienceNumber = require('./transformAudienceNumber');
 
 let get = Promise.promisify(require('superagent').get);
 
@@ -9,10 +10,6 @@ function judgeDataAna(liveJson, name) {
     if (liveJson.length === 0) {
         console.log(`${ name }数据解析失败`);
     }
-}
-
-function transformAudienceNumber(text) {
-    return text.indexOf('万') > 0 ? text.replace(/万/, '') * 10000 : text;
 }
 
 function crawlLolForHuya(url) {
