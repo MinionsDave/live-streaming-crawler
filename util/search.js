@@ -160,8 +160,8 @@ function searchQuanmin(keyword) {
 
 /**
  * 搜索龙珠的方法
- * isSign为1表示正在直播
  * live字段为其直播信息
+ * live.isLive 表示是否正在直播
  * 有点缺陷就是没有直播截图
  * 因为不知道为什么用superagent获取不了，所以用了request
  *
@@ -203,33 +203,40 @@ function searchLongzhu(keyword) {
     });
 }
 
-/*
- * 这个是否在直播没有明显的标志
- * 估计观众为0的就是没有在直播
- * 大于0的就是在直播的
+/**
+ * 搜索战旗的方法
+ * 没有明确的是否在线标志
+ * 估计是人数等于0则是在线
+ *
+ * @async
+ * @param {string} keyword - 搜索的关键字
+ * @return {Promise.<Array.<Object>>}
 */
 function searchZhanqi(keyword) {
     return new Promise((resolve) => {
-        const url = searchUrl.createZhanqiSearchUrl(keyword);
         request
-            .get(url)
+            .get(searchUrl.createZhanqiSearchUrl(keyword))
             .then(({text}) => {
                 let $ = cheerio.load(text);
                 let liveJson = [];
                 $('a.js-jump-link').each((idx, ele) => {
                     ele = $(ele);
+                    const audienceNumber = transformAudienceNumber($(ele.find('.meat span.dv')[0]).text());
                     liveJson.push({
                         title: $(ele.find('p.room-name')[0]).text(),
                         anchor: $(ele.find('.anchor')[0]).text(),
-                        audienceNumber: $(ele.find('.meat span.dv')[0]).text(),
+                        audienceNumber,
                         snapshot: $(ele.find('.img-box img')[0]).attr('src'),
                         url: 'https://www.zhanqi.tv' + ele.attr('href'),
                         platformIcon: '/images/icon2.png',
+                        category: $(ele.find('p.name')[0]).text(),
+                        onlineFlag: audienceNumber > 0,
                     });
                 });
-                console.log(liveJson);
+                resolve(liveJson);
             })
             .catch((err) => {
+                resolve([]);
                 console.log('战旗tv搜索失败');
                 console.log(err);
             });
@@ -244,5 +251,3 @@ module.exports = {
     searchLongzhu,
     searchZhanqi,
 };
-
-searchLongzhu('古手羽').then(console.log);

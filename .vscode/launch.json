@@ -5,7 +5,7 @@
             "name": "Launch",
             "type": "node2",
             "request": "launch",
-            "program": "${workspaceRoot}/util/search.js",
+            "program": "${file}",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
