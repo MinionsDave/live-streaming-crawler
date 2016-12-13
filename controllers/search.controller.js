@@ -12,20 +12,11 @@ function searchAll(req, res, next) {
     }
     join(...promiseList)
         .then((jsonList) => {
-            let liveJson = [].concat(...jsonList);
-            console.log(liveJson);
-            liveJson.sort((o1, o2) => {
+            let liveJson = [].concat(...jsonList).sort((o1, o2) => {
                 if (o1.onlineFlag !== o2.onlineFlag) {
-                    return o2.onlineFlag;
+                    return o2.onlineFlag ? 1 : -1;
                 }
                 return o2.audienceNumber - o1.audienceNumber;
             });
-            console.log(liveJson);
         });
 }
-
-searchAll({
-    query: {
-        keyword: 1,
-    },
-});
