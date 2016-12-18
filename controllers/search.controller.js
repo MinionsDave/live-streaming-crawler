@@ -1,5 +1,4 @@
 const search = require('../util/search');
-const join = require('bluebird').join;
 const Promise = require('bluebird');
 
 function searchAll(req, res, next) {
@@ -21,8 +20,8 @@ function searchAll(req, res, next) {
         .then(console.log);
 }
 
-searchAll({
-    query: {
-        keyword: 1
-    }
-})
+// searchAll({
+//     query: {
+//         keyword: 1
+//     }
+// })

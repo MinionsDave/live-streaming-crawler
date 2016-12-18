@@ -170,14 +170,14 @@ exports.crawlHuya = function(categoryPath) {
             .then(({text}) => {
                 let liveJson = [];
                 let $ = cheerio.load(text);
-                $('.video-list .video-list-item').each((idx, ele) => {
+                $('.game-live-item').each((idx, ele) => {
                     ele = $(ele);
                     let audienceText = $(ele.find('i.js-num')[0]).text();
                     liveJson.push({
-                        title: $(ele.find('.all_live_tit a')[0]).text(),
+                        title: $(ele.find('a.title')[0]).text(),
                         anchor: $(ele.find('i.nick')[0]).text(),
                         audienceNumber: transformAudienceNumber(audienceText),
-                        snapshot: $(ele.find('a.video-info img')[0]).attr('src'),
+                        snapshot: $(ele.find('a.video-info img')[0]).attr('data-original'),
                         url: $(ele.find('a.video-info')).attr('href'),
                         platformIcon: '/images/icon3.png',
                     });
