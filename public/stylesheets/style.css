@@ -86,6 +86,14 @@ body {
     padding-right: 45px;
 }
 
+.header .form-group {
+    margin-bottom: 0;
+}
+/*
+.header .form-group .form-control-feedback {
+    cursor: pointer;
+}*/
+
 .author ul {
     padding-left: 50px;
     margin-top: 20px;

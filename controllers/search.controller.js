@@ -1,8 +1,7 @@
 const search = require('../util/search');
 const Promise = require('bluebird');
 
-function searchAll(req, res, next) {
-    const keyword = req.query.keyword;
+function searchAll({query: {keyword}}, res, next) {
     if (!keyword) {
         return next();
     }
@@ -17,11 +16,9 @@ function searchAll(req, res, next) {
             }
             return o2.audienceNumber - o1.audienceNumber;
         }))
-        .then(console.log);
+        .then(() => res.render('index', {
+            liveJson,
+        }));
 }
 
-// searchAll({
-//     query: {
-//         keyword: 1
-//     }
-// })
+module.exports = {searchAll};

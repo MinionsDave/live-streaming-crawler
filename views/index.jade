@@ -10,6 +10,9 @@ block content
             quanminTv: '全民',
             longzhu: '龙珠'
         };
+        if (!category) {
+            category = {};
+        }
         var platform = platformList[category.platform];
 
     #page-content-wrapper
@@ -34,6 +37,11 @@ block content
                         if platform
                             li(role='presentation')
                                 a(role='menuitem', href='/#{category.path}') 全部
+                form.pull-right.form-inlile(method='get' action='/search')
+                    .form-group.form-group-sm.has-feedback
+                        input.form-control(placeholder='一键全平台搜索', name='keyword')
+                        span.glyphicon.glyphicon-search.form-control-feedback
+
         .container-fluid.liveList
             .row
                 each item in liveJson
