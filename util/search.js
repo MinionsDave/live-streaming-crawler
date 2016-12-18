@@ -17,7 +17,7 @@ const transformAudienceNumber = require('./transformAudienceNumber');
  * @return {Promise.<Array.<Object>>}
 */
 function searchPanda(keyword) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         request
             .get(searchUrl.createPandaSearchUrl(keyword))
             .then(({text}) => {
@@ -32,11 +32,7 @@ function searchPanda(keyword) {
                     onlineFlag: item.reliable == 1,
                 })));
             })
-            .catch((err) => {
-                console.log('熊猫tv搜索失败');
-                console.log(err);
-                resolve([]);
-            });
+            .catch(reject);
     });
 }
 
@@ -54,7 +50,7 @@ function searchPanda(keyword) {
  * @return {Promise.<Array.<Object>>}
 */
 function searchHuya(keyword) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         request
             .get(searchUrl.createHuyaSearchUrl(keyword))
             .then(({text}) => {
@@ -69,11 +65,7 @@ function searchHuya(keyword) {
                     onlineFlag: true,
                 })));
             })
-            .catch((err) => {
-                console.log('虎牙tv搜索失败');
-                console.log(err);
-                resolve([]);
-            });
+            .catch(reject);
     });
 }
 
@@ -88,7 +80,7 @@ function searchHuya(keyword) {
  * @return {Promise.<Array.<Object>>}
 */
 function searchDouyu(keyword) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const url = searchUrl.createDouyuSearchUrl(keyword);
         request
             .get(url)
@@ -110,11 +102,7 @@ function searchDouyu(keyword) {
                 });
                 resolve(liveJson);
             })
-            .catch((err) => {
-                console.log('斗鱼tv搜索失败');
-                console.log(err);
-                resolve([]);
-            });
+            .catch(reject);
     });
 }
 
@@ -127,7 +115,7 @@ function searchDouyu(keyword) {
  * @return {Promise.<Array.<Object>>}
 */
 function searchQuanmin(keyword) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         request
             .post(searchUrl.createQuanminSearchUrl())
             .send({
@@ -150,11 +138,7 @@ function searchQuanmin(keyword) {
                     onlineFlag: item.play_status,
                 })));
             })
-            .catch((err) => {
-                console.log('全民tv搜索失败');
-                console.log(err);
-                resolve([]);
-            });
+            .catch(reject);
     });
 }
 
@@ -181,7 +165,7 @@ function searchLongzhu(keyword) {
             pageSize: '16',
         },
     };
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         nativeRequest(options)
             .then(({body}) => {
                 resolve(JSON.parse(body).items.map((item) => ({
@@ -195,11 +179,7 @@ function searchLongzhu(keyword) {
                     onlineFlag: item.live.isLive,
                 })));
             })
-            .catch((err) => {
-                console.log('龙珠tv获取失败');
-                console.log(err);
-                resolve([]);
-            });
+            .catch(reject);
     });
 }
 
@@ -213,7 +193,7 @@ function searchLongzhu(keyword) {
  * @return {Promise.<Array.<Object>>}
 */
 function searchZhanqi(keyword) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         request
             .get(searchUrl.createZhanqiSearchUrl(keyword))
             .then(({text}) => {
@@ -235,11 +215,7 @@ function searchZhanqi(keyword) {
                 });
                 resolve(liveJson);
             })
-            .catch((err) => {
-                resolve([]);
-                console.log('战旗tv搜索失败');
-                console.log(err);
-            });
+            .catch(reject);
     });
 }
 
