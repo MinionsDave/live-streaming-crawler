@@ -11,8 +11,11 @@ block content
             longzhu: '龙珠'
         };
         if (!category) {
-            category = {};
+            category = {
+                isSearch: true
+            };
         }
+        console.log(category);
         var platform = platformList[category.platform];
 
     #page-content-wrapper
@@ -21,22 +24,23 @@ block content
                 a.glyphicon.glyphicon-align-justify#menu-toggle
                 h3.categoryName= category.name
             .col-md-4.dropdown
-                .pull-right
-                    button#dLabel.btn.btn-primary(type='button', data-toggle='dropdown', aria-haspopup="true", aria-expanded="false")
-                        if platform
-                            | #{platform}
-                        else
-                            | 所有平台
-                        | &nbsp;&nbsp;&nbsp;
-                        span.caret
-                    ul.dropdown-menu(aria-labelledby='dLabel', role='menu')
-                        each name, path in platformList
-                            li(role='presentation')
-                                if platform !== name
-                                    a(role='menuitem', href='/#{ category.path }/#{ path }')= name
-                        if platform
-                            li(role='presentation')
-                                a(role='menuitem', href='/#{category.path}') 全部
+                if !category.isSearch
+                    .pull-right
+                        button#dLabel.btn.btn-primary.btn-sm(type='button', data-toggle='dropdown', aria-haspopup="true", aria-expanded="false")
+                            if platform
+                                | #{platform}
+                            else
+                                | 所有平台
+                            | &nbsp;&nbsp;&nbsp;
+                            span.caret
+                        ul.dropdown-menu(aria-labelledby='dLabel', role='menu')
+                            each name, path in platformList
+                                li(role='presentation')
+                                    if platform !== name
+                                        a(role='menuitem', href='/#{category.path}/#{path}')= name
+                            if platform
+                                li(role='presentation')
+                                    a(role='menuitem', href='/#{category.path}') 全部
                 form.pull-right.form-inlile(method='get' action='/search')
                     .form-group.form-group-sm.has-feedback
                         input.form-control(placeholder='一键全平台搜索', name='keyword', value='#{keyword || ""}')
@@ -48,6 +52,10 @@ block content
                     a.col-lg-3.col-md-4.col-sm-6.ellipsis(href='#{item.url}', target='_blank')
                         img(src='#{item.snapshot}' onerror='this.onerror="";this.src="images/404.jpg"')
                         img.platform-icon(src='#{item.platformIcon}')
+                        if item.onlineFlag === false
+                            span.rest 离线
+                        if item.category
+                            span.category= item.category
                         h5 &nbsp;#{item.title}
                         .row
                             .col-sm-7

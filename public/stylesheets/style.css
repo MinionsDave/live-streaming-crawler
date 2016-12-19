@@ -8,6 +8,10 @@ body {
     border-bottom: 2px solid #e8e8e8;
 }
 
+.header form {
+    margin-right: 10px;
+}
+
 #menu-toggle {
     color: #000;
     cursor: pointer;
@@ -38,6 +42,34 @@ body {
     position: absolute;
     top: 0;
     right: 20px;
+}
+
+.liveList .rest {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    text-align: center;
+    height: 22px;
+    line-height: 22px;
+    background-color: #7a7979;
+    display: inline-block;
+    color: #fff;
+    width: 50px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.liveList .category {
+    position: absolute;
+    right: 15px;
+    bottom: 64px;
+    text-align: center;
+    line-height: 22px;
+    background-color: #62b21b;
+    display: inline-block;
+    color: #fff;
+    padding: 0 10px;
+    border-top-left-radius: 5px;
 }
 
 .liveList a {
@@ -82,7 +114,8 @@ body {
 }
 
 .header .dropdown {
-    padding-top: 13px;
+    padding-top: 7px;
+    padding-bottom: 6px;
     padding-right: 45px;
 }
 
