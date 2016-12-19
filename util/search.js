@@ -18,6 +18,7 @@ const transformAudienceNumber = require('./transformAudienceNumber');
 */
 function searchPanda(keyword) {
     return new Promise((resolve, reject) => {
+        console.log(searchUrl.createPandaSearchUrl(keyword));
         request
             .get(searchUrl.createPandaSearchUrl(keyword))
             .then(({text}) => {
