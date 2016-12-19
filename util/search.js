@@ -26,7 +26,7 @@ function searchPanda(keyword) {
                     audienceNumber: item.person_num,
                     snapshot: item.pictures.img,
                     url: `http://www.panda.tv/${item.roomid}`,
-                    platformIcon: '/images/icon3.png',
+                    platformIcon: '/images/icon0.png',
                     anchor: item.nickname,
                     category: item.classification,
                     onlineFlag: item.reliable == 1,
@@ -92,7 +92,7 @@ function searchDouyu(keyword) {
                     liveJson.push({
                         title: ele.attr('title'),
                         audienceNumber: transformAudienceNumber($(ele.find('.dy-num')[0]).text()),
-                        snapshot: $(ele.find('.imgbox img')[0]).attr('src'),
+                        snapshot: $(ele.find('.imgbox img')[0]).attr('data-original'),
                         url: 'https://www.douyu.com' + ele.attr('href'),
                         platformIcon: '/images/icon1.png',
                         anchor: $(ele.find('h3.ellipsis')[0]).text(),

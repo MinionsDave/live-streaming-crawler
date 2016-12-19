@@ -18,6 +18,7 @@ function searchAll({query: {keyword}}, res, next) {
         }))
         .then(() => res.render('index', {
             liveJson,
+            keyword,
         }));
 }
 

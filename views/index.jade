@@ -39,14 +39,14 @@ block content
                                 a(role='menuitem', href='/#{category.path}') 全部
                 form.pull-right.form-inlile(method='get' action='/search')
                     .form-group.form-group-sm.has-feedback
-                        input.form-control(placeholder='一键全平台搜索', name='keyword')
+                        input.form-control(placeholder='一键全平台搜索', name='keyword', value='#{keyword || ""}')
                         span.glyphicon.glyphicon-search.form-control-feedback
 
         .container-fluid.liveList
             .row
                 each item in liveJson
                     a.col-lg-3.col-md-4.col-sm-6.ellipsis(href='#{item.url}', target='_blank')
-                        img(src='#{item.snapshot}')
+                        img(src='#{item.snapshot}' onerror='this.onerror="";this.src="images/404.jpg"')
                         img.platform-icon(src='#{item.platformIcon}')
                         h5 &nbsp;#{item.title}
                         .row
