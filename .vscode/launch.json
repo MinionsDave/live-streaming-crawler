@@ -5,7 +5,7 @@
             "name": "Launch",
             "type": "node2",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceRoot}/bin/www",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
