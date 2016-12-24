@@ -7,13 +7,28 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const winston = require('winston');
 const expressWinston = require('express-winston');
+const mongoose = require('mongoose');
+const Promise = require('bluebird');
 
+const visitCtrl = require('./controllers/visit.controller');
+const dbConfig = require('./config/db');
 const sendErrMailFn = require('./util/mail');
 const count = require('./util/visitCount');
 const routes = require('./routes/index');
 const author = require('./routes/author');
 
 const app = express();
+
+mongoose.Promise = Promise;
+
+mongoose.connect(dbConfig.address)
+  .then(() => console.log('数据库连接成功'), () => {
+    /**
+     * @todo 保证服务器数据库稳定之后需要在未连接上数据库的时候抛出异常
+     */
+    winston.error('unable to connect to database');
+    // throw new Error('unable to connect to database');
+  });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,6 +48,8 @@ app.use((req, res, next) => {
   count.add();
   next();
 });
+
+app.use(visitCtrl.create);
 
 app.use('/', routes);
 app.use('/author', author);
