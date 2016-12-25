@@ -13,7 +13,6 @@ const Promise = require('bluebird');
 const visitCtrl = require('./controllers/visit.controller');
 const dbConfig = require('./config/db');
 const sendErrMailFn = require('./util/mail');
-const count = require('./util/visitCount');
 const routes = require('./routes/index');
 const author = require('./routes/author');
 
@@ -23,6 +22,7 @@ mongoose.Promise = Promise;
 
 mongoose.connect(dbConfig.address)
   .then(() => console.log('数据库连接成功'), () => {
+
     /**
      * @todo 保证服务器数据库稳定之后需要在未连接上数据库的时候抛出异常
      */
@@ -42,12 +42,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// 访问数量+1
-app.use((req, res, next) => {
-  count.add();
-  next();
-});
 
 app.use(visitCtrl.create);
 

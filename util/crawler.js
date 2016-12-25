@@ -169,10 +169,6 @@ exports.huya = function(categoryPath) {
 
 exports.longzhu = function(categoryPath) {
     const url = categories[categoryPath].longzhu;
-    if (!url) {
-        console.log(`全民tv没有${categoryPath}类目`);
-        return [];
-    }
     return new Promise((resolve, reject) => {
         get(url)
             .then(({text}) => {
