@@ -1,19 +1,19 @@
 const cheerio = require('cheerio');
 const Promise = require('bluebird');
+const winston = require('winston');
+const get = require('superagent').get;
 
-const LiveCategory = require('../config/liveCategory');
+const categories = require('../config/category');
 const transformAudienceNumber = require('./transformAudienceNumber');
-
-let get = Promise.promisify(require('superagent').get);
 
 function judgeDataAna(liveJson, name) {
     if (liveJson.length === 0) {
-        console.log(`${ name }数据解析失败`);
+        winston.error(`${ name }数据解析失败`);
     }
 }
 
 function crawlLolForHuya(url) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         get(url)
             .then(({text}) => {
                 let liveJson = [];
@@ -30,20 +30,13 @@ function crawlLolForHuya(url) {
                 judgeDataAna(liveJson, '虎牙');
                 resolve(liveJson);
             })
-            .catch((err) => {
-                console.log('虎牙tv获取失败');
-                resolve([]);
-            });
+            .catch(reject);
     });
 }
 
-exports.crawlQuanminTv = function(categoryPath) {
-    const url = LiveCategory[categoryPath].urlForQuanmin;
-    if (!url) {
-        console.log(`全民tv没有${categoryPath}类目`);
-        return [];
-    }
-    return new Promise((resolve) => {
+exports.quanmin = function(categoryPath) {
+    const url = categories[categoryPath].quanmin;
+    return new Promise((resolve, reject) => {
         get(url)
             .then(({text}) => {
                 let liveJson = [];
@@ -60,16 +53,13 @@ exports.crawlQuanminTv = function(categoryPath) {
                 judgeDataAna(liveJson, '全民');
                 resolve(liveJson);
             })
-            .catch((err) => {
-                console.log('全民获取失败');
-                resolve([]);
-            });
+            .catch(reject);
     });
 };
 
-exports.crawlPandaTv = function(categoryPath) {
-    const url = LiveCategory[categoryPath].urlForPanda;
-    return new Promise((resolve) => {
+exports.panda = function(categoryPath) {
+    const url = categories[categoryPath].panda;
+    return new Promise((resolve, reject) => {
         get(url)
             .then(({text}) => {
                 let liveJson = [];
@@ -88,16 +78,13 @@ exports.crawlPandaTv = function(categoryPath) {
                 judgeDataAna(liveJson, '熊猫tv');
                 resolve(liveJson);
             })
-            .catch((err) => {
-                console.log('熊猫tv获取失败');
-                resolve([]);
-            });
+            .catch(reject);
     });
 };
 
-exports.crawlDouyuTv = function(categoryPath) {
-    const url = LiveCategory[categoryPath].urlForDouyu;
-    return new Promise((resolve) => {
+exports.douyu = function(categoryPath) {
+    const url = categories[categoryPath].douyu;
+    return new Promise((resolve, reject) => {
         get(url)
             .then(({text}) => {
                 let liveJson = [];
@@ -117,20 +104,13 @@ exports.crawlDouyuTv = function(categoryPath) {
                 judgeDataAna(liveJson, '斗鱼tv');
                 resolve(liveJson);
             })
-            .catch((err) => {
-                console.log('斗鱼tv获取失败');
-                resolve([]);
-            });
+            .catch(reject);
     });
 };
 
-exports.crawlZhanqiTv = function(categoryPath) {
-    const url = LiveCategory[categoryPath].urlForZhanqi;
-    if (!url) {
-        console.log(`战旗tv没有${categoryPath}类目`);
-        return [];
-    }
-    return new Promise((resolve) => {
+exports.zhanqi = function(categoryPath) {
+    const url = categories[categoryPath].zhanqi;
+    return new Promise((resolve, reject) => {
         get(url)
             .then(({text}) => {
                 let liveJson = [];
@@ -154,18 +134,16 @@ exports.crawlZhanqiTv = function(categoryPath) {
                 judgeDataAna(liveJson, '战旗tv');
                 resolve(liveJson);
             })
-            .catch((err) => {
-                resolve([]);
-            });
+            .catch(reject);
     });
 };
 
-exports.crawlHuya = function(categoryPath) {
-    const url = LiveCategory[categoryPath].urlForHuya;
+exports.huya = function(categoryPath) {
+    const url = categories[categoryPath].huya;
     if (categoryPath === 'lol') {
         return crawlLolForHuya(url);
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         get(url)
             .then(({text}) => {
                 let liveJson = [];
@@ -185,20 +163,17 @@ exports.crawlHuya = function(categoryPath) {
                 judgeDataAna(liveJson, '虎牙');
                 resolve(liveJson);
             })
-            .catch((err) => {
-                console.log('虎牙获取失败');
-                resolve([]);
-            });
+            .catch(reject);
     });
 };
 
-exports.crawlLongzhu = function(categoryPath) {
-    const url = LiveCategory[categoryPath].urlForLongzhu;
+exports.longzhu = function(categoryPath) {
+    const url = categories[categoryPath].longzhu;
     if (!url) {
         console.log(`全民tv没有${categoryPath}类目`);
         return [];
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         get(url)
             .then(({text}) => {
                 let liveJson = [];
@@ -218,9 +193,6 @@ exports.crawlLongzhu = function(categoryPath) {
                 judgeDataAna(liveJson, '龙珠');
                 resolve(liveJson);
             })
-            .catch((err) => {
-                console.log('龙珠获取失败');
-                resolve([]);
-            });
+            .catch(reject);
     });
 };
