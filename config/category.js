@@ -55,7 +55,7 @@ module.exports = {
         name: '穿越火线',
         panda: 'http://www.panda.tv/cate/cf',
         douyu: 'https://www.douyu.com/directory/game/CF',
-        zhanqi: 'https://www.zhanqi.tv/games/csgo',
+        zhanqi: 'https://www.zhanqi.tv/games/CrossFire',
         huya: 'http://www.huya.com/g/4',
         quanmin: 'http://www.quanmin.tv/json/categories/cfpc/list.json',
         longzhu: 'http://longzhu.com/channels/cf',

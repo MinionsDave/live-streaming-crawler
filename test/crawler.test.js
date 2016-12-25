@@ -32,7 +32,7 @@ function commonCrawlerTest(crawlFnName, crawlFn) {
                     let res = crawlFn(item);
                     res.then(list => {
                         expect(list).to.be.an('array');
-                        expect(list.length).to.be.above(1);
+                        expect(list.length).to.be.above(0);
                         if (list instanceof Array && list.length > 0) {
                             example = list[0];
                             Object.freeze(example);
