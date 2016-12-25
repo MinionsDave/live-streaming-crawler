@@ -1,3 +1,9 @@
+/*
+ * @Author: Jax2000
+ * @Date: 2016-12-25 15:41:10
+ * @Last Modified by:   Jax2000
+ * @Last Modified time: 2016-12-25 15:41:10
+ */
 const search = require('../util/search');
 const Promise = require('bluebird');
 
