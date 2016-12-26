@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2016-12-26 22:06:43
+ * @Last Modified time: 2016-12-26 22:22:16
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -45,7 +45,7 @@ function create(req, res, next) {
 
     analysisIp(ip)
         .then(result => result)
-        .catch(() => ({ip: '错误ip'}))
+        .catch(() => ({ip}))
         .then(result => {
             const visit = new Visit(Object.assign({
                 category,
