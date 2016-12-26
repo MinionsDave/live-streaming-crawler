@@ -1,4 +1,4 @@
 node_modules/
-/logs
+logs
 coverage
 config/smtp.js
