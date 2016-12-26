@@ -37,7 +37,7 @@
             "name": "Launch2",
             "type": "node2",
             "request": "launch",
-            "program": "${workspaceRoot}/bin/www",
+            "program": "${file}",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
