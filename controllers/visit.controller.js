@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2016-12-26 22:22:16
+ * @Last Modified time: 2016-12-28 21:58:13
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -50,7 +50,6 @@ function create(req, res, next) {
             const visit = new Visit(Object.assign({
                 category,
                 platform,
-                visitTime: moment().valueOf(),
                 userAgent,
                 isEngineSpider: userAgent.indexOf('spider') > -1,
             }, result));
