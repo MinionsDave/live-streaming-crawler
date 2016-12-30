@@ -13,8 +13,9 @@ const Promise = require('bluebird');
 const visitCtrl = require('./controllers/visit.controller');
 const dbConfig = require('./config/db');
 const sendErrMailFn = require('./util/mail');
-const routes = require('./routes/index');
-const author = require('./routes/author');
+const routes = require('./routes/index.route');
+const author = require('./routes/author.route');
+const visit = require('./routes/visit.route');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use(visitCtrl.create);
 
 app.use('/', routes);
 app.use('/author', author);
+app.use(visit);
 
 // 处理404
 app.use(function(req, res, next) {
@@ -54,7 +56,7 @@ app.use(function(req, res, next) {
   res.render('404');
 });
 
-// 开发环境中发送错误堆栈到前端
+// 开发环境中发送错误堆栈到前端并打印到控制台
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
@@ -62,6 +64,7 @@ if (app.get('env') === 'development') {
       message: err.message,
       error: err,
     });
+    console.error(err);
   });
 }
 

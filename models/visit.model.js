@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:13:43
  * @Last Modified by: Jax2000
- * @Last Modified time: 2016-12-28 23:02:17
+ * @Last Modified time: 2016-12-29 21:32:18
  */
 const mongoose = require('mongoose');
 
@@ -21,7 +21,7 @@ const VisitSchema = new mongoose.Schema({
     isp: String,
 });
 
-VisitSchema.static = {
+VisitSchema.statics = {
 
     /**
      * list visit records

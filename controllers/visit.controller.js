@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2016-12-28 21:58:13
+ * @Last Modified time: 2016-12-29 21:38:16
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -57,6 +57,15 @@ function create(req, res, next) {
         });
 }
 
+function index(req, res, next) {
+    const page = parseInt((req.query.page > 0 ? req.query.page : 1) - 1);
+    const limit = parseInt(req.query.limit > 0 ? req.query.limit : 30);
+    const options = {page, limit};
+    Visit.list(options)
+        .then(data => res.json(data))
+        .catch(next);
+}
+
 /**
  * 通过淘宝api解析ip
  * 返回的对象 code不为0就为失败
@@ -78,4 +87,4 @@ function analysisIp(ip) {
     });
 }
 
-module.exports = {create};
+module.exports = {create, index};
