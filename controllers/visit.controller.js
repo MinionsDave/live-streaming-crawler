@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2016-12-29 21:38:16
+ * @Last Modified time: 2017-01-01 15:50:52
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -57,13 +57,19 @@ function create(req, res, next) {
         });
 }
 
+/*
+ * list visits data
+ */
 function index(req, res, next) {
     const page = parseInt((req.query.page > 0 ? req.query.page : 1) - 1);
     const limit = parseInt(req.query.limit > 0 ? req.query.limit : 30);
     const options = {page, limit};
-    Visit.list(options)
-        .then(data => res.json(data))
-        .catch(next);
+    Promise.join(Visit.list(options), Visit.count(), function(data, totalCount) {
+        res.json({
+            data,
+            totalCount,
+        });
+    });
 }
 
 /**
