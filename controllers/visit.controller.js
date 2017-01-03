@@ -2,12 +2,13 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2017-01-01 15:50:52
+ * @Last Modified time: 2017-01-03 23:59:14
  */
 const moment = require('moment');
 const winston = require('winston');
 const request = require('superagent');
 const Promise = require('bluebird');
+const {wrap: async} = require('co');
 
 const Visit = require('../models/visit.model');
 const categories = require('../config/category');
@@ -25,23 +26,23 @@ function create(req, res, next) {
      * 第三位为平台，为空则为全部
      */
     const arr = req.originalUrl.split('/');
-    let category;
-    let platform;
+    let category = categories[arr[1] || 'lol'];
+    let platform = platforms[arr[2] || 'all'];
     if (arr[1] === 'author') {
         category = '关于本站';
-    } else if (!categories[arr[1] || 'lol']) {
+    } else if (!category || !platform) {
 
-        // 类目都不存在，说明404，什么都不用做了
+        // 类目或者平台都不存在，说明404，什么都不用做了
         return;
     } else {
-        category = categories[arr[1] || 'lol'].name;
-        platform = platforms[arr[2] || 'all'].name;
+        category = category.name;
+        platform = platform.name;
     }
 
     const ip = req.headers['x-forwarded-for'] ||
                 req.connection.remoteAddress ||
                 req.socket.remoteAddress;
-    const userAgent = req.headers['user-agent'];
+    const userAgent = req.headers['user-agent'] || 'no';
 
     analysisIp(ip)
         .then(result => result)
@@ -60,17 +61,15 @@ function create(req, res, next) {
 /*
  * list visits data
  */
-function index(req, res, next) {
+const index = async(function* (req, res, next) {
     const page = parseInt((req.query.page > 0 ? req.query.page : 1) - 1);
     const limit = parseInt(req.query.limit > 0 ? req.query.limit : 30);
     const options = {page, limit};
-    Promise.join(Visit.list(options), Visit.count(), function(data, totalCount) {
-        res.json({
-            data,
-            totalCount,
-        });
+    res.json(yield {
+        visits: Visit.list(options),
+        totalCount: Visit.count(),
     });
-}
+});
 
 /**
  * 通过淘宝api解析ip
