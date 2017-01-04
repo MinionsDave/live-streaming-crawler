@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2017-01-03 23:59:14
+ * @Last Modified time: 2017-01-04 15:04:57
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -30,12 +30,13 @@ function create(req, res, next) {
     let platform = platforms[arr[2] || 'all'];
     if (arr[1] === 'author') {
         category = '关于本站';
-    } else if (!category || !platform) {
+    }
+    if (!category || !platform) {
 
         // 类目或者平台都不存在，说明404，什么都不用做了
         return;
     } else {
-        category = category.name;
+        category = typeof category === 'object' ? category.name : category;
         platform = platform.name;
     }
 

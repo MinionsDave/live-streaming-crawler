@@ -2,14 +2,14 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:13:43
  * @Last Modified by: Jax2000
- * @Last Modified time: 2016-12-29 21:32:18
+ * @Last Modified time: 2017-01-04 14:51:50
  */
 const mongoose = require('mongoose');
 
 const VisitSchema = new mongoose.Schema({
     ip: String,
     category: String,
-    platform: String,
+    platform: {type: String, default: ''},
     visitTime: {type: Number, default: Date.now},
     userAgent: String,
     isEngineSpider: Boolean, // 是否为搜索引擎爬虫
