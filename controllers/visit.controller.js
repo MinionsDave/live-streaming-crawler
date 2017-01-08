@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2017-01-04 15:04:57
+ * @Last Modified time: 2017-01-08 16:25:10
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -63,8 +63,8 @@ function create(req, res, next) {
  * list visits data
  */
 const index = async(function* (req, res, next) {
-    const page = parseInt((req.query.page > 0 ? req.query.page : 1) - 1);
-    const limit = parseInt(req.query.limit > 0 ? req.query.limit : 30);
+    const page = req.query.pageNo - 1;
+    const limit = +req.query.pageSize;
     const options = {page, limit};
     res.json(yield {
         visits: Visit.list(options),
