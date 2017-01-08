@@ -16,6 +16,7 @@ const sendErrMailFn = require('./util/mail');
 const routes = require('./routes/index.route');
 const author = require('./routes/author.route');
 const visit = require('./routes/visit.route');
+const session = require('./routes/session.route');
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use(visitCtrl.create);
 app.use('/', routes);
 app.use('/author', author);
 app.use(visit);
+app.use(session);
 
 // 处理404
 app.use(function(req, res, next) {
