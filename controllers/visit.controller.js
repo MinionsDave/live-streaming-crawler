@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2017-01-08 16:25:10
+ * @Last Modified time: 2017-01-21 15:16:52
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -72,6 +72,54 @@ const index = async(function* (req, res, next) {
     });
 });
 
+/*
+ * get visits count by period
+ */
+const getCountByPeriod = async(function* (req, res, next) {
+    const period = req.params.period;
+    const now = moment().valueOf();
+    let startDate;
+    let endDate;
+    switch (period) {
+        case 'today':
+            startDate = moment().startOf('day').valueOf();
+            endDate = now;
+            break;
+        case 'yesterday':
+            startDate = moment().subtract(1, 'day').startOf('day').valueOf();
+            endDate = moment().subtract(1, 'day').endOf('day').valueOf();
+            break;
+        case 'thisWeek':
+            startDate = moment().startOf('week').valueOf();
+            endDate = now;
+            break;
+        case 'lastWeek':
+            startDate = moment().subtract(1, 'week').startOf('week').valueOf();
+            endDate = moment().subtract(1, 'week').endOf('week').valueOf();
+            break;
+        case 'thisMonth':
+            startDate = moment().startOf('month').valueOf();
+            endDate = now;
+            break;
+        case 'lastMonth':
+            startDate = moment().subtract(1, 'month').startOf('month').valueOf();
+            endDate = moment().subtract(1, 'month').endOf('month').valueOf();
+            break;
+        case 'all':
+            // insted of minimum
+            startDate = moment('2000', 'YYYY').valueOf();
+            endDate = now;
+            break;
+        default:
+            winston.info(`invalid period: ${period}`);
+            return res.status(400).end();
+    }
+    const count = yield Visit.periodCount(startDate, endDate);
+    res.json({
+        count,
+    });
+});
+
 /**
  * 通过淘宝api解析ip
  * 返回的对象 code不为0就为失败
@@ -93,4 +141,4 @@ function analysisIp(ip) {
     });
 }
 
-module.exports = {create, index};
+module.exports = {create, index, getCountByPeriod};

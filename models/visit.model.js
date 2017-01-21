@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:13:43
  * @Last Modified by: Jax2000
- * @Last Modified time: 2017-01-04 14:51:50
+ * @Last Modified time: 2017-01-21 14:23:04
  */
 const mongoose = require('mongoose');
 
@@ -37,6 +37,22 @@ VisitSchema.statics = {
                     .limit(limit)
                     .skip(limit * page)
                     .exec();
+    },
+
+    /**
+     * get visits count in a special period
+     *
+     * @param {Number} startDate
+     * @param {Number} endDate
+     * @return {Promise.<Number>}
+     */
+    periodCount: function(startDate, endDate) {
+        return this.count({
+            visitTime: {
+                $gt: startDate,
+                $lt: endDate,
+            },
+        });
     },
 };
 
