@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2017-01-21 15:16:52
+ * @Last Modified time: 2017-01-21 16:04:31
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -120,6 +120,19 @@ const getCountByPeriod = async(function* (req, res, next) {
     });
 });
 
+/*
+ * group by field and get each sum
+ */
+const groupCounting = async(function* (req, res, next) {
+    const field = req.params.field;
+    let result = yield Visit.groupCountingByField(field);
+    if (result.length === 1 && !result[0]._id) {
+        winston.info(`invalid field: ${field}`);
+        return res.status(400).end();
+    }
+    res.json(result);
+});
+
 /**
  * 通过淘宝api解析ip
  * 返回的对象 code不为0就为失败
@@ -141,4 +154,4 @@ function analysisIp(ip) {
     });
 }
 
-module.exports = {create, index, getCountByPeriod};
+module.exports = {create, index, getCountByPeriod, groupCounting};

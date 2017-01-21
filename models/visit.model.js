@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:13:43
  * @Last Modified by: Jax2000
- * @Last Modified time: 2017-01-21 14:23:04
+ * @Last Modified time: 2017-01-21 15:47:52
  */
 const mongoose = require('mongoose');
 
@@ -53,6 +53,24 @@ VisitSchema.statics = {
                 $lt: endDate,
             },
         });
+    },
+
+    /**
+     * group and counting by a field
+     *
+     * @param {string} field
+     * @return {Promise.<Object>}
+     */
+    groupCountingByField: function(field) {
+        field = '$' + field;
+        return this.aggregate([
+            {
+                $group: {
+                    _id: field,
+                    totalCount: {$sum: 1},
+                },
+            },
+        ]);
     },
 };
 
