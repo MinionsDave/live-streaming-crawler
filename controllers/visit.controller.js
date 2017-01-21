@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2017-01-21 16:04:31
+ * @Last Modified time: 2017-01-21 20:27:58
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -132,6 +132,33 @@ const groupCounting = async(function* (req, res, next) {
     }
     res.json(result);
 });
+
+/*
+ * group by time periods get each count
+ */
+const groupCountingByPeriod = async(function* (req, res, next) {
+    try {
+        const data = yield Visit.aggregate([
+            {
+                $project: {
+                    _id: 0,
+                    day: {
+                        $dayOfYear: 1,
+                    },
+                },
+            }, {
+                $group: {
+                    _id: 'day',
+                    totalCount: {$sum: 1},
+                },
+            },
+        ]);
+        console.log(data);
+    } catch (e) {
+        console.error(e);
+    }
+});
+groupCountingByPeriod();
 
 /**
  * 通过淘宝api解析ip
