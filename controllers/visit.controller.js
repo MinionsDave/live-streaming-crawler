@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2017-01-21 20:27:58
+ * @Last Modified time: 2017-02-01 14:02:34
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -137,28 +137,28 @@ const groupCounting = async(function* (req, res, next) {
  * group by time periods get each count
  */
 const groupCountingByPeriod = async(function* (req, res, next) {
-    try {
-        const data = yield Visit.aggregate([
-            {
-                $project: {
-                    _id: 0,
-                    day: {
-                        $dayOfYear: 1,
-                    },
-                },
-            }, {
-                $group: {
-                    _id: 'day',
-                    totalCount: {$sum: 1},
-                },
-            },
-        ]);
-        console.log(data);
-    } catch (e) {
-        console.error(e);
+    const data = (yield Visit.find({}, 'visitTime').sort({visitTime: 1}));
+    let length = data.length;
+    let result = [];
+    let n = 0;
+    let startDate = moment(data[0].visitTime).startOf('days').valueOf();
+    result.push({
+        timestamp: startDate,
+        count: 0,
+    });
+    while (n < length - 1) {
+        n++;
+        if (data[n].visitTime > moment(result[result.length - 1].timestamp).add(1, 'd').valueOf()) {
+            result.push({
+                timestamp: moment(data[n].visitTime).startOf('days').valueOf(),
+                count: 1,
+            });
+        } else {
+            result[result.length - 1].count++;
+        }
     }
+    res.json(result);
 });
-groupCountingByPeriod();
 
 /**
  * 通过淘宝api解析ip
