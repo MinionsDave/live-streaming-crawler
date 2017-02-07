@@ -10,4 +10,8 @@ router.get('/api/visits/count/:period', visitCtrl.getCountByPeriod);
 
 router.get('/api/visits/groupInfo/:field', visitCtrl.groupCounting);
 
+router.get('/api/visits/groupCounting', visitCtrl.groupCountingByPeriod);
+
+router.get('/api/visits/dataByPeriod/:period', visitCtrl.getVisitsByPeriod);
+
 module.exports = router;

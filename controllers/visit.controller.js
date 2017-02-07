@@ -2,7 +2,7 @@
  * @Author: Jax2000
  * @Date: 2016-12-24 16:20:20
  * @Last Modified by: Jax2000
- * @Last Modified time: 2017-02-01 14:02:34
+ * @Last Modified time: 2017-02-07 22:47:48
  */
 const moment = require('moment');
 const winston = require('winston');
@@ -70,6 +70,25 @@ const index = async(function* (req, res, next) {
         visits: Visit.list(options),
         totalCount: Visit.count(),
     });
+});
+
+/**
+ * get visits data by period
+ */
+const getVisitsByPeriod = async(function* (req, res, next) {
+    const period = req.params.period;
+    let data = [];
+    if (period === 'thisMonth') {
+        data = yield Visit.find({
+            visitTime: {
+                $lt: moment().valueOf(),
+                $gt: moment().startOf('month').valueOf(),
+            },
+        }, 'visitTime');
+    } else {
+        data = yield Visit.find({}, 'visitTime');
+    }
+    res.json(data);
 });
 
 /*
@@ -181,4 +200,4 @@ function analysisIp(ip) {
     });
 }
 
-module.exports = {create, index, getCountByPeriod, groupCounting};
+module.exports = {create, index, getCountByPeriod, groupCounting, groupCountingByPeriod, getVisitsByPeriod};
