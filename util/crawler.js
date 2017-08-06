@@ -66,10 +66,12 @@ exports.panda = function(categoryPath) {
                 let $ = cheerio.load(text);
                 $('.video-list-item-wrap').each((idx, ele) => {
                     ele = $(ele);
+                    const audienceText = $(ele.find('.video-number')[0]).text();
+                    const audienceNumber = audienceText.indexOf('万人') > -1 ? +audienceText.replace(/万人/, '') * 10000 : +audienceText.replace(/人/, '');
                     liveJson.push({
                         title: $(ele.find('.video-title')[0]).attr('title'),
                         anchor: $(ele.find('.video-nickname')[0]).text(),
-                        audienceNumber: $(ele.find('.video-number')[0]).text(),
+                        audienceNumber,
                         snapshot: $(ele.find('.video-img-lazy')[0]).attr('data-original'),
                         url: 'http://www.panda.tv' + ele.attr('href'),
                         platformIcon: '/images/icon0.png',
@@ -114,23 +116,33 @@ exports.zhanqi = function(categoryPath) {
         get(url)
             .then(({text}) => {
                 let liveJson = [];
-                let $ = cheerio.load(text);
-                let $gameDomList = $('.clearfix.gameList a');
-                if ($gameDomList.length === 0) {
-                    $gameDomList = $('.clearfix.js-room-list-ul a');
-                }
-                $gameDomList.each((idx, ele) => {
-                    ele = $(ele);
-                    let audienceText = $(ele.find('span.views span.dv')[0]).text();
+                for(let item of JSON.parse(text).data.rooms) {
                     liveJson.push({
-                        title: $(ele.find('.info-area>span.name')[0]).text(),
-                        anchor: $(ele.find('.anchor.anchor-to-cut.dv')[0]).text(),
-                        audienceNumber: transformAudienceNumber(audienceText),
-                        snapshot: $(ele.find('.imgBox img')[0]).attr('src'),
-                        url: 'https://www.zhanqi.tv' + ele.attr('href'),
+                        title: item.title,
+                        anchor: item.nickname,
+                        audienceNumber: item.online,
+                        snapshot: item.bpic,
+                        url: 'http://www.zhanqi.tv' + item.url,
                         platformIcon: '/images/icon2.png',
                     });
-                });
+                }
+                // let $ = cheerio.load(text);
+                // let $gameDomList = $('.clearfix.gameList a');
+                // if ($gameDomList.length === 0) {
+                //     $gameDomList = $('.clearfix.js-room-list-ul a');
+                // }
+                // $gameDomList.each((idx, ele) => {
+                //     ele = $(ele);
+                //     let audienceText = $(ele.find('span.views span.dv')[0]).text();
+                //     liveJson.push({
+                //         title: $(ele.find('.info-area>span.name')[0]).text(),
+                //         anchor: $(ele.find('.anchor.anchor-to-cut.dv')[0]).text(),
+                //         audienceNumber: transformAudienceNumber(audienceText),
+                //         snapshot: $(ele.find('.imgBox img')[0]).attr('src'),
+                //         url: 'https://www.zhanqi.tv' + ele.attr('href'),
+                //         platformIcon: '/images/icon2.png',
+                //     });
+                // });
                 judgeDataAna(liveJson, '战旗tv');
                 resolve(liveJson);
             })
