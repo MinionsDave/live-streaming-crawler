@@ -17,6 +17,24 @@ module.exports = {
         quanmin: 'http://www.quanmin.tv/json/categories/heartstone/list.json',
         longzhu: 'http://longzhu.com/channels/hs',
     },
+    'kingglory': {
+        name: '王者荣耀',
+        panda: 'http://www.panda.tv/cate/kingglory',
+        douyu: 'https://www.douyu.com/directory/game/wzry',
+        zhanqi: 'https://www.zhanqi.tv/api/static/v2.1/game/live/115/30/1.json',
+        huya: 'http://www.huya.com/g/wzry',
+        quanmin: 'http://www.quanmin.tv/json/categories/wangzhe/list.json',
+        longzhu: 'http://longzhu.com/channels/wzry',
+    },
+    'pubg': {
+        name: '绝地求生',
+        panda: 'https://www.panda.tv/cate/pubg',
+        douyu: 'https://www.douyu.com/directory/game/jdqs',
+        zhanqi: 'https://www.zhanqi.tv/api/static/v2.1/game/live/106/30/1.json',
+        huya: 'http://www.huya.com/g/2793',
+        quanmin: 'http://www.quanmin.tv/json/categories/juediqiusheng/list.json',
+        longzhu: 'http://longzhu.com/channels/jdqs?from=figame',
+    },
     'overwatch': {
         name: '守望先锋',
         panda: 'http://www.panda.tv/cate/overwatch',
@@ -74,6 +92,6 @@ module.exports = {
         huya: 'http://www.huya.com/g/1663',
         quanmin: 'http://www.quanmin.tv/json/categories/beauty/list.json',
         longzhu: 'http://longzhu.com/channels/belle',
-        zhanqi: 'https://www.zhanqi.tv/api/static/v2.1/game/live/65/30/1.json'
+        zhanqi: 'https://www.zhanqi.tv/api/static/v2.1/game/live/65/30/1.json',
     },
 };

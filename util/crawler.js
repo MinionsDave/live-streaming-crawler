@@ -67,7 +67,7 @@ exports.panda = function(categoryPath) {
                 $('.video-list-item-wrap').each((idx, ele) => {
                     ele = $(ele);
                     const audienceText = $(ele.find('.video-number')[0]).text();
-                    const audienceNumber = audienceText.indexOf('万人') > -1 ? +audienceText.replace(/万人/, '') * 10000 : +audienceText.replace(/人/, '');
+                    const audienceNumber = audienceText.indexOf('万') > -1 ? +audienceText.replace(/万/, '') * 10000 : +audienceText.replace(/人/, '');
                     liveJson.push({
                         title: $(ele.find('.video-title')[0]).attr('title'),
                         anchor: $(ele.find('.video-nickname')[0]).text(),
@@ -126,23 +126,6 @@ exports.zhanqi = function(categoryPath) {
                         platformIcon: '/images/icon2.png',
                     });
                 }
-                // let $ = cheerio.load(text);
-                // let $gameDomList = $('.clearfix.gameList a');
-                // if ($gameDomList.length === 0) {
-                //     $gameDomList = $('.clearfix.js-room-list-ul a');
-                // }
-                // $gameDomList.each((idx, ele) => {
-                //     ele = $(ele);
-                //     let audienceText = $(ele.find('span.views span.dv')[0]).text();
-                //     liveJson.push({
-                //         title: $(ele.find('.info-area>span.name')[0]).text(),
-                //         anchor: $(ele.find('.anchor.anchor-to-cut.dv')[0]).text(),
-                //         audienceNumber: transformAudienceNumber(audienceText),
-                //         snapshot: $(ele.find('.imgBox img')[0]).attr('src'),
-                //         url: 'https://www.zhanqi.tv' + ele.attr('href'),
-                //         platformIcon: '/images/icon2.png',
-                //     });
-                // });
                 judgeDataAna(liveJson, '战旗tv');
                 resolve(liveJson);
             })
